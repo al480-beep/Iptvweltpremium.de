@@ -10,7 +10,7 @@ Pass a version number to also bump the ?v= cache buster on CSS/JS:  python3 tool
 import pathlib, re, sys
 
 ROOT = pathlib.Path(__file__).resolve().parent.parent
-PAGES = ["preise/index.html", "kostenloser-test/index.html", "impressum.html", "datenschutz.html", "404.html"]
+PAGES = ["preise/index.html", "kostenloser-test/index.html", "checkout/index.html", "impressum.html", "datenschutz.html", "404.html"]
 BLOCKS = ("top", "bottom")
 
 

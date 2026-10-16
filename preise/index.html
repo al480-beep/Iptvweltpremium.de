@@ -20,7 +20,7 @@
 <link rel="preconnect" href="https://fonts.googleapis.com">
 <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
 <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700&family=Sora:wght@600;700;800&display=swap" rel="stylesheet">
-<link rel="stylesheet" href="/assets/css/style.css?v=6">
+<link rel="stylesheet" href="/assets/css/style.css?v=7">
 </head>
 <body>
 
@@ -92,6 +92,7 @@
 
   <section id="preise" class="pricing page-first">
     <div class="container">
+      <!-- plans:start -->
       <div class="device-switch reveal" role="tablist" aria-label="Anzahl der Geräte">
         <span class="switch-glider" aria-hidden="true"></span>
         <button class="active" role="tab" aria-selected="true" data-devices="1"><svg><use href="#i-user"/></svg>1 Gerät</button>
@@ -100,16 +101,16 @@
         <button role="tab" aria-selected="false" data-devices="4"><svg><use href="#i-users"/></svg>4 Geräte</button>
         <button role="tab" aria-selected="false" data-devices="5"><svg><use href="#i-users"/></svg>5 Geräte</button>
       </div>
-      <p class="device-hint reveal">Ideal für Familien: Mit mehreren Geräten schauen alle gleichzeitig, auf unterschiedlichen Bildschirmen.</p>
+      <p class="device-hint reveal">Wählen Sie, auf wie vielen Geräten gleichzeitig geschaut wird. Ideal für Familien.</p>
 
-      <div class="plans">
+      <div class="plans" data-plans>
         <article class="plan reveal" data-months="1">
           <div class="plan-name">1 Monat</div>
           <div class="plan-devices">1 Gerät</div>
           <div class="plan-price price-anim"><b>9</b><span>€</span></div>
           <div class="plan-monthly">einmalig, ohne Verlängerung</div>
-          <div><span class="plan-save"></span></div>
-          <ul>
+          <div class="plan-save-wrap"><span class="plan-save"></span></div>
+          <ul class="plan-features">
             <li><svg><use href="#i-check"/></svg>+50.000 Live-Kanäle</li>
             <li><svg><use href="#i-check"/></svg>+300.000 Filme &amp; Serien (VOD)</li>
             <li><svg><use href="#i-check"/></svg>4K Ultra HD Qualität</li>
@@ -119,16 +120,16 @@
             <li><svg><use href="#i-check"/></svg>VPN-freundlich</li>
             <li><svg><use href="#i-check"/></svg>24/7 Deutscher Support</li>
           </ul>
-          <button class="btn btn-ghost btn-block plan-btn">Jetzt starten</button>
+          <a class="btn btn-primary btn-block plan-btn" href="/checkout/?geraete=1&amp;laufzeit=1">Jetzt starten <svg><use href="#i-arrow"/></svg></a>
         </article>
 
         <article class="plan reveal d1" data-months="3">
           <div class="plan-name">3 Monate</div>
           <div class="plan-devices">1 Gerät</div>
           <div class="plan-price price-anim"><b>29</b><span>€</span></div>
-          <div class="plan-monthly">&nbsp;</div>
-          <div><span class="plan-save"></span></div>
-          <ul>
+          <div class="plan-monthly">nur 9,67 € pro Monat</div>
+          <div class="plan-save-wrap"><span class="plan-save"></span></div>
+          <ul class="plan-features">
             <li><svg><use href="#i-check"/></svg>+50.000 Live-Kanäle</li>
             <li><svg><use href="#i-check"/></svg>+300.000 Filme &amp; Serien (VOD)</li>
             <li><svg><use href="#i-check"/></svg>4K Ultra HD Qualität</li>
@@ -138,16 +139,16 @@
             <li><svg><use href="#i-check"/></svg>VPN-freundlich</li>
             <li><svg><use href="#i-check"/></svg>24/7 Deutscher Support</li>
           </ul>
-          <button class="btn btn-ghost btn-block plan-btn">Jetzt starten</button>
+          <a class="btn btn-primary btn-block plan-btn" href="/checkout/?geraete=1&amp;laufzeit=3">Jetzt starten <svg><use href="#i-arrow"/></svg></a>
         </article>
 
         <article class="plan reveal d2" data-months="6">
           <div class="plan-name">6 Monate</div>
           <div class="plan-devices">1 Gerät</div>
           <div class="plan-price price-anim"><b>39</b><span>€</span></div>
-          <div class="plan-monthly">&nbsp;</div>
-          <div><span class="plan-save"></span></div>
-          <ul>
+          <div class="plan-monthly">nur 6,50 € pro Monat</div>
+          <div class="plan-save-wrap"><span class="plan-save">Sie sparen 28 %</span></div>
+          <ul class="plan-features">
             <li><svg><use href="#i-check"/></svg>+50.000 Live-Kanäle</li>
             <li><svg><use href="#i-check"/></svg>+300.000 Filme &amp; Serien (VOD)</li>
             <li><svg><use href="#i-check"/></svg>4K Ultra HD Qualität</li>
@@ -157,7 +158,7 @@
             <li><svg><use href="#i-check"/></svg>VPN-freundlich</li>
             <li><svg><use href="#i-check"/></svg>24/7 Deutscher Support</li>
           </ul>
-          <button class="btn btn-ghost btn-block plan-btn">Jetzt starten</button>
+          <a class="btn btn-primary btn-block plan-btn" href="/checkout/?geraete=1&amp;laufzeit=6">Jetzt starten <svg><use href="#i-arrow"/></svg></a>
         </article>
 
         <article class="plan featured reveal d3" data-months="12">
@@ -165,10 +166,10 @@
           <div class="plan-name">1 Jahr</div>
           <div class="plan-devices">1 Gerät</div>
           <div class="plan-price price-anim"><b>49</b><span>€</span></div>
-          <div class="plan-monthly">&nbsp;</div>
-          <div><span class="plan-save"></span></div>
-          <ul>
-            <li class="bonus"><svg><use href="#i-star"/></svg><span><b>Bonus:</b> IBO Player Pro Premium kostenlos inklusive</span></li>
+          <div class="plan-monthly">nur 4,08 € pro Monat</div>
+          <div class="plan-save-wrap"><span class="plan-save">Sie sparen 55 %</span></div>
+          <div class="plan-bonus"><svg><use href="#i-star"/></svg><div><b>IBO Player Pro Premium Abo</b><span>kostenlos inklusive</span></div></div>
+          <ul class="plan-features">
             <li><svg><use href="#i-check"/></svg>+50.000 Live-Kanäle</li>
             <li><svg><use href="#i-check"/></svg>+300.000 Filme &amp; Serien (VOD)</li>
             <li><svg><use href="#i-check"/></svg>4K Ultra HD Qualität</li>
@@ -178,9 +179,11 @@
             <li><svg><use href="#i-check"/></svg>VPN-freundlich</li>
             <li><svg><use href="#i-check"/></svg>24/7 Deutscher Support</li>
           </ul>
-          <button class="btn btn-primary btn-block plan-btn">Jetzt starten</button>
+          <a class="btn btn-primary btn-block plan-btn" href="/checkout/?geraete=1&amp;laufzeit=12">Jetzt starten <svg><use href="#i-arrow"/></svg></a>
         </article>
       </div>
+      <div class="plans-dots" aria-hidden="true"><i class="active"></i><i></i><i></i><i></i></div>
+      <!-- plans:end -->
 
       <div class="pay-note reveal">
         <span><svg><use href="#i-lock"/></svg>Sichere Bezahlung</span>
@@ -191,7 +194,7 @@
       <div class="matrix reveal">
         <div class="matrix-head">
           <h3>Alle Preise im Überblick</h3>
-          <p>Klicken Sie auf einen Preis, um direkt zu bestellen.</p>
+          <p>Klicken Sie auf einen Preis, um direkt zur Bestellung zu gelangen.</p>
         </div>
         <div class="matrix-scroll">
           <table>
@@ -235,7 +238,7 @@
       <div class="faq reveal d1" itemscope itemtype="https://schema.org/FAQPage">
         <details itemscope itemprop="mainEntity" itemtype="https://schema.org/Question" open>
           <summary itemprop="name">Wie bestelle ich?<i aria-hidden="true"></i></summary>
-          <div itemscope itemprop="acceptedAnswer" itemtype="https://schema.org/Answer"><p itemprop="text">Wählen Sie Geräteanzahl und Laufzeit und klicken Sie auf „Jetzt starten“. Ihre Auswahl wird als WhatsApp-Nachricht an uns gesendet, wir antworten sofort mit den Zahlungsinformationen.</p></div>
+          <div itemscope itemprop="acceptedAnswer" itemtype="https://schema.org/Answer"><p itemprop="text">Wählen Sie Geräteanzahl und Laufzeit und klicken Sie auf „Jetzt starten“. Auf der Bestellseite geben Sie Vorname, E-Mail und Handynummer ein. Ihre Zugangsdaten erhalten Sie anschließend per E-Mail oder WhatsApp.</p></div>
         </details>
         <details itemscope itemprop="mainEntity" itemtype="https://schema.org/Question">
           <summary itemprop="name">Wann erhalte ich meine Zugangsdaten?<i aria-hidden="true"></i></summary>
@@ -311,6 +314,10 @@
 </footer>
 
 <a href="#" class="wa-float" data-wa aria-label="Per WhatsApp kontaktieren"><svg><use href="#i-wa"/></svg></a>
+<div class="mobile-cta" aria-label="Schnellzugriff">
+  <a href="/kostenloser-test/" class="btn btn-ghost">Kostenlos testen</a>
+  <a href="/preise/" class="btn btn-primary">Jetzt starten <svg><use href="#i-arrow"/></svg></a>
+</div>
 <button class="to-top" aria-label="Nach oben scrollen"><svg style="transform:rotate(-90deg)"><use href="#i-arrow"/></svg></button>
 
 <div class="cookie" role="dialog" aria-label="Hinweis zum Datenschutz" hidden>
@@ -319,26 +326,7 @@
 </div>
 <!-- /layout:bottom -->
 
-<!-- Bestell-Dialog -->
-<div class="modal" id="order-modal" role="dialog" aria-modal="true" aria-labelledby="order-title" aria-hidden="true">
-  <div class="modal-backdrop" data-close></div>
-  <div class="modal-panel">
-    <button class="modal-close" data-close aria-label="Schließen"><svg><use href="#i-close"/></svg></button>
-    <h3 id="order-title">Fast geschafft!</h3>
-    <p class="muted">Senden Sie uns Ihre Auswahl, wir melden uns sofort mit den Zahlungs- und Zugangsdaten.</p>
-    <div class="summary">
-      <div><span>Paket</span><b data-sum-plan>1 Monat</b></div>
-      <div><span>Geräte</span><b data-sum-devices>1 Gerät</b></div>
-      <div class="total"><span>Gesamt</span><b data-sum-total>9 €</b></div>
-    </div>
-    <div class="modal-actions">
-      <a href="#" class="btn btn-primary btn-block" data-order-wa target="_blank" rel="noopener">Jetzt starten <svg><use href="#i-arrow"/></svg></a>
-      <p class="modal-alt">Sie erhalten die Bestellung als WhatsApp-Nachricht. Lieber per E-Mail? <a href="#" data-order-mail>Hier per E-Mail bestellen</a></p>
-    </div>
-    <p class="fine">Keine automatische Verlängerung · Aktivierung in 5 bis 15 Minuten</p>
-  </div>
-</div>
 
-<script src="/assets/js/main.js?v=6" defer></script>
+<script src="/assets/js/main.js?v=7" defer></script>
 </body>
 </html>

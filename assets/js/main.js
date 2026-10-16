@@ -32,6 +32,7 @@
     return n.toLocaleString("de-DE", { minimumFractionDigits: Number.isInteger(n) ? 0 : 2, maximumFractionDigits: 2 });
   };
   var deviceLabel = function (d) { return d + (d === 1 ? " Gerät" : " Geräte"); };
+  var checkoutUrl = function (d, m) { return "/checkout/?geraete=" + d + "&laufzeit=" + m; };
   var waLink = function (text) {
     return "https://wa.me/" + CONFIG.whatsapp + "?text=" + encodeURIComponent(text);
   };
@@ -85,8 +86,6 @@
   // Preisrechner
   var current = 1;
   var switchEl = document.querySelector(".device-switch");
-  var modal = document.getElementById("order-modal");
-  var openModal = function () {};
   if (switchEl) {
   var glider = switchEl.querySelector(".switch-glider");
   var buttons = switchEl.querySelectorAll("button");
@@ -123,7 +122,7 @@
         anim.classList.remove("swap");
       }, 160);
 
-      plan.querySelector(".plan-btn").dataset.price = price;
+      plan.querySelector(".plan-btn").href = checkoutUrl(devices, months);
     });
   }
 
@@ -145,43 +144,6 @@
 
   }
 
-  // Bestell-Dialog
-  if (modal) {
-  var lastFocus = null;
-
-  openModal = function (months, devices) {
-    if (devices) current = devices;
-    var price = PRICES[current][months];
-    modal.querySelector("[data-sum-plan]").textContent = DURATION_LABEL[months];
-    modal.querySelector("[data-sum-devices]").textContent = deviceLabel(current);
-    modal.querySelector("[data-sum-total]").textContent = euro(price) + " €";
-    var text = "Hallo IPTV Welt Premium, ich möchte bestellen:\n" +
-      "Paket: " + DURATION_LABEL[months] + "\n" +
-      "Geräte: " + deviceLabel(current) + "\n" +
-      "Preis: " + euro(price) + " €";
-    modal.querySelector("[data-order-wa]").href = waLink(text);
-    modal.querySelector("[data-order-mail]").href = "mailto:" + CONFIG.email +
-      "?subject=" + encodeURIComponent("Bestellung: " + DURATION_LABEL[months] + ", " + deviceLabel(current)) +
-      "&body=" + encodeURIComponent(text);
-    lastFocus = document.activeElement;
-    modal.classList.add("open");
-    modal.setAttribute("aria-hidden", "false");
-    document.body.style.overflow = "hidden";
-    modal.querySelector(".modal-close").focus();
-  };
-  var closeModal = function () {
-    modal.classList.remove("open");
-    modal.setAttribute("aria-hidden", "true");
-    document.body.style.overflow = "";
-    if (lastFocus) lastFocus.focus();
-  };
-  document.querySelectorAll(".plan-btn").forEach(function (btn) {
-    btn.addEventListener("click", function () { openModal(Number(btn.closest(".plan").dataset.months)); });
-  });
-  modal.querySelectorAll("[data-close]").forEach(function (el) { el.addEventListener("click", closeModal); });
-  document.addEventListener("keydown", function (e) { if (e.key === "Escape" && modal.classList.contains("open")) closeModal(); });
-  }
-
   // Alle WhatsApp-/E-Mail-Links mit der Konfiguration füllen
   document.querySelectorAll("[data-wa]").forEach(function (a) {
     a.href = waLink(a.dataset.wa || "Hallo IPTV Welt Premium, ich habe eine Frage.");
@@ -197,27 +159,19 @@
 
   // Preisübersicht (alle Kombinationen)
   var matrix = document.querySelector("[data-matrix]");
-  if (matrix && switchEl) {
+  if (matrix) {
     [1, 3, 6, 12].forEach(function (m) {
       var tr = document.createElement("tr");
       if (m === 12) tr.className = "best";
       var html = "<td>" + DURATION_LABEL[m] + (m === 12 ? " 🏆" : "") + "</td>";
       for (var d = 1; d <= 5; d++) {
         var price = PRICES[d][m];
-        html += '<td><button class="matrix-buy" data-d="' + d + '" data-m="' + m + '" aria-label="' +
+        html += '<td><a class="matrix-buy" href="' + checkoutUrl(d, m) + '" aria-label="' +
           DURATION_LABEL[m] + ", " + deviceLabel(d) + " für " + euro(price) + ' € bestellen"><b>' + euro(price) +
-          " €</b><small>" + (m === 1 ? "einmalig" : euro(Math.round((price / m) * 100) / 100) + " €/Monat") + "</small></button></td>";
+          " €</b><small>" + (m === 1 ? "einmalig" : euro(Math.round((price / m) * 100) / 100) + " €/Monat") + "</small></a></td>";
       }
       tr.innerHTML = html;
       matrix.appendChild(tr);
-    });
-    matrix.addEventListener("click", function (e) {
-      var b = e.target.closest(".matrix-buy");
-      if (!b) return;
-      var d = Number(b.dataset.d);
-      var tab = switchEl.querySelector('button[data-devices="' + d + '"]');
-      if (tab && d !== current) tab.click();
-      openModal(Number(b.dataset.m), d);
     });
   }
 
@@ -323,12 +277,54 @@
     setStep(0); runSteps();
   }
 
+  // Mobile Schnellzugriff-Leiste (nicht auf Formularseiten)
+  var mcta = document.querySelector(".mobile-cta");
+  if (mcta) {
+    if (document.querySelector(".trial-page")) {
+      mcta.remove();
+    } else {
+      document.body.classList.add("has-mobile-cta");
+      var onMcta = function () { mcta.classList.toggle("show", window.scrollY > 480); };
+      window.addEventListener("scroll", onMcta, { passive: true });
+      onMcta();
+    }
+  }
+
+  // Paket-Karussell (Handy): Punkte zeigen die aktuelle Karte
+  var plansEl = document.querySelector("[data-plans]");
+  var plansDots = document.querySelectorAll(".plans-dots i");
+  if (plansEl && plansDots.length) {
+    plansEl.addEventListener("scroll", function () {
+      var card = plansEl.querySelector(".plan");
+      var idx = Math.round(plansEl.scrollLeft / (card.offsetWidth + 14));
+      plansDots.forEach(function (d, k) { d.classList.toggle("active", k === idx); });
+    }, { passive: true });
+  }
+
   // Nach-oben-Button
   var toTop = document.querySelector(".to-top");
   window.addEventListener("scroll", function () { toTop.classList.toggle("show", window.scrollY > 900); }, { passive: true });
   toTop.addEventListener("click", function () { window.scrollTo({ top: 0 }); });
 
-  // Formular „Kostenlos testen“
+  // Bestellseite: Paket aus der Adresse lesen
+  var order = null;
+  var summary = document.querySelector("[data-order-summary]");
+  if (summary) {
+    var q = new URLSearchParams(location.search);
+    var od = Number(q.get("geraete")), om = Number(q.get("laufzeit"));
+    if (!PRICES[od]) od = 1;
+    if (!PRICES[1][om]) om = 12;
+    var op = PRICES[od][om];
+    order = { devices: od, months: om, price: op };
+    summary.querySelector("[data-order-title]").textContent = DURATION_LABEL[om] + " · " + deviceLabel(od);
+    summary.querySelector("[data-order-price]").textContent = euro(op);
+    summary.querySelector("[data-order-meta]").textContent = (om === 1 ? "einmalig" : "nur " + euro(Math.round((op / om) * 100) / 100) + " € pro Monat") +
+      " · keine automatische Verlängerung";
+    summary.querySelector("[data-order-bonus]").hidden = om !== 12;
+    document.title = DURATION_LABEL[om] + ", " + deviceLabel(od) + " – Bestellung – IPTV Welt Premium";
+  }
+
+  // Formulare „Kostenlos testen“ und Bestellung
   var trialForm = document.querySelector("[data-trial-form]");
   if (trialForm) {
     // Ländervorwahlen: Deutschland zuerst und vorausgewählt, danach alle Länder alphabetisch
@@ -364,6 +360,7 @@
         notes: f.notes.value.trim(),
         website: f.website.value
       };
+      if (order) { data.devices = order.devices; data.months = order.months; }
       var bad = {
         firstName: !data.firstName,
         email: !/^[^\s@]+@[^\s@]+\.[^\s@]{2,}$/.test(data.email),
@@ -377,7 +374,7 @@
       showError("");
       var btn = trialForm.querySelector("button[type=submit]");
       btn.disabled = true;
-      fetch("/api/trial", { method: "POST", headers: { "Content-Type": "application/json" }, body: JSON.stringify(data) })
+      fetch(trialForm.dataset.endpoint || "/api/trial", { method: "POST", headers: { "Content-Type": "application/json" }, body: JSON.stringify(data) })
         .then(function (r) { if (!r.ok) throw new Error(r.status); return r.json(); })
         .then(function () {
           trialForm.hidden = true;
@@ -388,7 +385,8 @@
         })
         .catch(function () {
           btn.disabled = false;
-          var text = "Hallo IPTV Welt Premium, ich möchte einen kostenlosen Test.\nVorname: " + data.firstName +
+          var text = (order ? "Hallo IPTV Welt Premium, ich möchte bestellen: " + DURATION_LABEL[order.months] + ", " +
+            deviceLabel(order.devices) + " für " + euro(order.price) + " €." : "Hallo IPTV Welt Premium, ich möchte einen kostenlosen Test.") + "\nVorname: " + data.firstName +
             "\nE-Mail: " + data.email + "\nTelefon: " + data.dial + " " + data.phone + (data.notes ? "\nNotizen: " + data.notes : "");
           errEl.innerHTML = "Das hat leider nicht geklappt. Bitte versuchen Sie es erneut oder fordern Sie Ihren Test per " +
             '<a href="' + waLink(text) + '" target="_blank" rel="noopener">WhatsApp</a> an.';

@@ -20,7 +20,7 @@
 <link rel="preconnect" href="https://fonts.googleapis.com">
 <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
 <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700&family=Sora:wght@600;700;800&display=swap" rel="stylesheet">
-<link rel="stylesheet" href="/assets/css/style.css?v=6">
+<link rel="stylesheet" href="/assets/css/style.css?v=7">
 <link rel="preload" href="/assets/img/photo-hero.jpg" as="image" fetchpriority="high">
 <script type="application/ld+json">
 {
@@ -266,22 +266,112 @@
     </div>
   </section>
 
-  <!-- Preise (Kurzüberblick) -->
-  <section id="preise" class="price-teaser">
+  <!-- Preise -->
+  <section id="preise" class="pricing">
     <div class="container">
       <div class="section-head reveal">
         <span class="eyebrow">Transparente Preise</span>
-        <h2 class="display">Premium-TV ab <span class="grad-text">9 € im Monat</span></h2>
-        <p>Einmal zahlen, sofort schauen. Keine automatische Verlängerung, kein Vertrag. Mehr Geräte und alle Laufzeiten finden Sie auf der Preisseite.</p>
+        <h2 class="display">Ein Abo. <span class="grad-text">Alle Inhalte.</span></h2>
+        <p>Einmal zahlen, sofort schauen. Keine automatische Verlängerung, kein Vertrag.</p>
       </div>
-      <div class="teaser-grid reveal">
-        <div class="teaser"><span>1 Monat</span><b>9 €</b><small>einmalig</small></div>
-        <div class="teaser"><span>3 Monate</span><b>29 €</b><small>9,67 € pro Monat</small></div>
-        <div class="teaser"><span>6 Monate</span><b>39 €</b><small>6,50 € pro Monat</small></div>
-        <div class="teaser best"><em>Bester Preis</em><span>1 Jahr</span><b>49 €</b><small>nur 4,08 € pro Monat</small></div>
+      <!-- plans:start -->
+      <div class="device-switch reveal" role="tablist" aria-label="Anzahl der Geräte">
+        <span class="switch-glider" aria-hidden="true"></span>
+        <button class="active" role="tab" aria-selected="true" data-devices="1"><svg><use href="#i-user"/></svg>1 Gerät</button>
+        <button role="tab" aria-selected="false" data-devices="2"><svg><use href="#i-users"/></svg>2 Geräte</button>
+        <button role="tab" aria-selected="false" data-devices="3"><svg><use href="#i-users"/></svg>3 Geräte</button>
+        <button role="tab" aria-selected="false" data-devices="4"><svg><use href="#i-users"/></svg>4 Geräte</button>
+        <button role="tab" aria-selected="false" data-devices="5"><svg><use href="#i-users"/></svg>5 Geräte</button>
       </div>
-      <p class="teaser-note reveal">Preise für 1 Gerät. Pakete für bis zu 5 Geräte gleichzeitig verfügbar.</p>
-      <div class="cta-pair" style="justify-content:center"><a href="/preise/" class="btn btn-primary">Jetzt starten <svg><use href="#i-arrow"/></svg></a><a href="/kostenloser-test/" class="btn btn-ghost">Kostenlos testen</a></div>
+      <p class="device-hint reveal">Wählen Sie, auf wie vielen Geräten gleichzeitig geschaut wird. Ideal für Familien.</p>
+
+      <div class="plans" data-plans>
+        <article class="plan reveal" data-months="1">
+          <div class="plan-name">1 Monat</div>
+          <div class="plan-devices">1 Gerät</div>
+          <div class="plan-price price-anim"><b>9</b><span>€</span></div>
+          <div class="plan-monthly">einmalig, ohne Verlängerung</div>
+          <div class="plan-save-wrap"><span class="plan-save"></span></div>
+          <ul class="plan-features">
+            <li><svg><use href="#i-check"/></svg>+50.000 Live-Kanäle</li>
+            <li><svg><use href="#i-check"/></svg>+300.000 Filme &amp; Serien (VOD)</li>
+            <li><svg><use href="#i-check"/></svg>4K Ultra HD Qualität</li>
+            <li><svg><use href="#i-check"/></svg>Bundesliga · Sky · Dazn</li>
+            <li><svg><use href="#i-check"/></svg>PPV Events inklusive</li>
+            <li><svg><use href="#i-check"/></svg>EPG &amp; Catch-Up TV</li>
+            <li><svg><use href="#i-check"/></svg>VPN-freundlich</li>
+            <li><svg><use href="#i-check"/></svg>24/7 Deutscher Support</li>
+          </ul>
+          <a class="btn btn-primary btn-block plan-btn" href="/checkout/?geraete=1&amp;laufzeit=1">Jetzt starten <svg><use href="#i-arrow"/></svg></a>
+        </article>
+
+        <article class="plan reveal d1" data-months="3">
+          <div class="plan-name">3 Monate</div>
+          <div class="plan-devices">1 Gerät</div>
+          <div class="plan-price price-anim"><b>29</b><span>€</span></div>
+          <div class="plan-monthly">nur 9,67 € pro Monat</div>
+          <div class="plan-save-wrap"><span class="plan-save"></span></div>
+          <ul class="plan-features">
+            <li><svg><use href="#i-check"/></svg>+50.000 Live-Kanäle</li>
+            <li><svg><use href="#i-check"/></svg>+300.000 Filme &amp; Serien (VOD)</li>
+            <li><svg><use href="#i-check"/></svg>4K Ultra HD Qualität</li>
+            <li><svg><use href="#i-check"/></svg>Bundesliga · Sky · Dazn</li>
+            <li><svg><use href="#i-check"/></svg>PPV Events inklusive</li>
+            <li><svg><use href="#i-check"/></svg>EPG &amp; Catch-Up TV</li>
+            <li><svg><use href="#i-check"/></svg>VPN-freundlich</li>
+            <li><svg><use href="#i-check"/></svg>24/7 Deutscher Support</li>
+          </ul>
+          <a class="btn btn-primary btn-block plan-btn" href="/checkout/?geraete=1&amp;laufzeit=3">Jetzt starten <svg><use href="#i-arrow"/></svg></a>
+        </article>
+
+        <article class="plan reveal d2" data-months="6">
+          <div class="plan-name">6 Monate</div>
+          <div class="plan-devices">1 Gerät</div>
+          <div class="plan-price price-anim"><b>39</b><span>€</span></div>
+          <div class="plan-monthly">nur 6,50 € pro Monat</div>
+          <div class="plan-save-wrap"><span class="plan-save">Sie sparen 28 %</span></div>
+          <ul class="plan-features">
+            <li><svg><use href="#i-check"/></svg>+50.000 Live-Kanäle</li>
+            <li><svg><use href="#i-check"/></svg>+300.000 Filme &amp; Serien (VOD)</li>
+            <li><svg><use href="#i-check"/></svg>4K Ultra HD Qualität</li>
+            <li><svg><use href="#i-check"/></svg>Bundesliga · Sky · Dazn</li>
+            <li><svg><use href="#i-check"/></svg>PPV Events inklusive</li>
+            <li><svg><use href="#i-check"/></svg>EPG &amp; Catch-Up TV</li>
+            <li><svg><use href="#i-check"/></svg>VPN-freundlich</li>
+            <li><svg><use href="#i-check"/></svg>24/7 Deutscher Support</li>
+          </ul>
+          <a class="btn btn-primary btn-block plan-btn" href="/checkout/?geraete=1&amp;laufzeit=6">Jetzt starten <svg><use href="#i-arrow"/></svg></a>
+        </article>
+
+        <article class="plan featured reveal d3" data-months="12">
+          <span class="plan-tag">★ Bester Preis</span>
+          <div class="plan-name">1 Jahr</div>
+          <div class="plan-devices">1 Gerät</div>
+          <div class="plan-price price-anim"><b>49</b><span>€</span></div>
+          <div class="plan-monthly">nur 4,08 € pro Monat</div>
+          <div class="plan-save-wrap"><span class="plan-save">Sie sparen 55 %</span></div>
+          <div class="plan-bonus"><svg><use href="#i-star"/></svg><div><b>IBO Player Pro Premium Abo</b><span>kostenlos inklusive</span></div></div>
+          <ul class="plan-features">
+            <li><svg><use href="#i-check"/></svg>+50.000 Live-Kanäle</li>
+            <li><svg><use href="#i-check"/></svg>+300.000 Filme &amp; Serien (VOD)</li>
+            <li><svg><use href="#i-check"/></svg>4K Ultra HD Qualität</li>
+            <li><svg><use href="#i-check"/></svg>Bundesliga · Sky · Dazn</li>
+            <li><svg><use href="#i-check"/></svg>PPV Events inklusive</li>
+            <li><svg><use href="#i-check"/></svg>EPG &amp; Catch-Up TV</li>
+            <li><svg><use href="#i-check"/></svg>VPN-freundlich</li>
+            <li><svg><use href="#i-check"/></svg>24/7 Deutscher Support</li>
+          </ul>
+          <a class="btn btn-primary btn-block plan-btn" href="/checkout/?geraete=1&amp;laufzeit=12">Jetzt starten <svg><use href="#i-arrow"/></svg></a>
+        </article>
+      </div>
+      <div class="plans-dots" aria-hidden="true"><i class="active"></i><i></i><i></i><i></i></div>
+      <!-- plans:end -->
+
+      <div class="pay-note reveal">
+        <span><svg><use href="#i-bolt"/></svg>Zugangsdaten in 5 bis 15 Minuten</span>
+        <span><svg><use href="#i-shield"/></svg>Keine automatische Verlängerung</span>
+        <span><svg><use href="#i-headset"/></svg>24/7 Deutscher Support</span>
+      </div>
     </div>
   </section>
 
@@ -535,6 +625,10 @@
 </footer>
 
 <a href="#" class="wa-float" data-wa aria-label="Per WhatsApp kontaktieren"><svg><use href="#i-wa"/></svg></a>
+<div class="mobile-cta" aria-label="Schnellzugriff">
+  <a href="/kostenloser-test/" class="btn btn-ghost">Kostenlos testen</a>
+  <a href="/preise/" class="btn btn-primary">Jetzt starten <svg><use href="#i-arrow"/></svg></a>
+</div>
 <button class="to-top" aria-label="Nach oben scrollen"><svg style="transform:rotate(-90deg)"><use href="#i-arrow"/></svg></button>
 
 <div class="cookie" role="dialog" aria-label="Hinweis zum Datenschutz" hidden>
@@ -542,6 +636,6 @@
   <a href="#" class="cookie-ok" data-cookie="ok">OK</a>
 </div>
 <!-- /layout:bottom -->
-<script src="/assets/js/main.js?v=6" defer></script>
+<script src="/assets/js/main.js?v=7" defer></script>
 </body>
 </html>
