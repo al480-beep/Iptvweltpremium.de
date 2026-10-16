@@ -23,12 +23,9 @@ In `assets/js/main.js`, at the top:
 
 ## Deployment
 
-Add two repository secrets under **Settings → Secrets and variables → Actions**:
+**Option A – Cloudflare Git integration (current setup):** in Cloudflare Pages, connect this repository, set the production branch to `main`, leave the build command empty and set the output directory to `/`. Every push to `main` goes live.
 
-- `CLOUDFLARE_API_TOKEN` – a token with the *Cloudflare Pages: Edit* permission
-- `CLOUDFLARE_ACCOUNT_ID` – your Cloudflare account ID
-
-Every push to `main` then publishes the site to the Cloudflare Pages project `iptvweltpremium`. Connect the custom domain `iptvweltpremium.de` once in the Cloudflare dashboard under **Workers & Pages → iptvweltpremium → Custom domains**.
+**Option B – GitHub Actions:** add the secrets `CLOUDFLARE_API_TOKEN` (permission *Cloudflare Pages: Edit*) and `CLOUDFLARE_ACCOUNT_ID`, plus the repository variable `DEPLOY_WITH_ACTIONS=true`, under **Settings → Secrets and variables → Actions**. The workflow in `.github/workflows/deploy.yml` then deploys to the Pages project `iptvweltpremium` on every push to `main`. It is skipped while that variable is unset.
 
 ## Local preview
 

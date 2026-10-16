@@ -18,6 +18,8 @@ env:
 jobs:
   deploy:
     runs-on: ubuntu-latest
+    # Skips quietly when the secrets are not set (e.g. when Cloudflare's own Git integration deploys the site).
+    if: ${{ vars.DEPLOY_WITH_ACTIONS == 'true' }}
     steps:
       - uses: actions/checkout@v4
 
