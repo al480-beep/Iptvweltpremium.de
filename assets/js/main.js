@@ -42,6 +42,11 @@
   window.addEventListener("scroll", onScroll, { passive: true });
   onScroll();
 
+  // Aktuelle Seite in der Navigation markieren
+  document.querySelectorAll(".nav-links > li:not(.nav-mobile-ctas) > a").forEach(function (a) {
+    if (a.getAttribute("href") === location.pathname) a.setAttribute("aria-current", "page");
+  });
+
   // Mobile Navigation
   var menuBtn = document.querySelector(".menu-btn");
   menuBtn.addEventListener("click", function () {
@@ -326,22 +331,69 @@
   // Formular „Kostenlos testen“
   var trialForm = document.querySelector("[data-trial-form]");
   if (trialForm) {
+    // Ländervorwahlen: Deutschland zuerst und vorausgewählt, danach alle Länder alphabetisch
+    var DIAL = "AF93 AL355 DZ213 AS1684 AD376 AO244 AI1264 AG1268 AR54 AM374 AW297 AU61 AT43 AZ994 BS1242 BH973 BD880 BB1246 BY375 BE32 BZ501 BJ229 BM1441 BT975 BO591 BA387 BW267 BR55 VG1284 BN673 BG359 BF226 BI257 KH855 CM237 CA1 CV238 KY1345 CF236 TD235 CL56 CN86 CO57 KM269 CG242 CD243 CK682 CR506 CI225 HR385 CU53 CW599 CY357 CZ420 DK45 DJ253 DM1767 DO1809 EC593 EG20 SV503 GQ240 ER291 EE372 SZ268 ET251 FO298 FJ679 FI358 FR33 GF594 PF689 GA241 GM220 GE995 DE49 GH233 GI350 GR30 GL299 GD1473 GP590 GU1671 GT502 GG44 GN224 GW245 GY592 HT509 HN504 HK852 HU36 IS354 IN91 ID62 IR98 IQ964 IE353 IM44 IL972 IT39 JM1876 JP81 JE44 JO962 KZ7 KE254 KI686 XK383 KW965 KG996 LA856 LV371 LB961 LS266 LR231 LY218 LI423 LT370 LU352 MO853 MG261 MW265 MY60 MV960 ML223 MT356 MH692 MQ596 MR222 MU230 YT262 MX52 FM691 MD373 MC377 MN976 ME382 MS1664 MA212 MZ258 MM95 NA264 NR674 NP977 NL31 NC687 NZ64 NI505 NE227 NG234 KP850 MK389 NO47 OM968 PK92 PW680 PS970 PA507 PG675 PY595 PE51 PH63 PL48 PT351 PR1787 QA974 RE262 RO40 RU7 RW250 KN1869 LC1758 VC1784 WS685 SM378 ST239 SA966 SN221 RS381 SC248 SL232 SG65 SX1721 SK421 SI386 SB677 SO252 ZA27 KR82 SS211 ES34 LK94 SD249 SR597 SE46 CH41 SY963 TW886 TJ992 TZ255 TH66 TL670 TG228 TO676 TT1868 TN216 TR90 TM993 TC1649 TV688 UG256 UA380 AE971 GB44 US1 UY598 UZ998 VU678 VA39 VE58 VN84 VI1340 YE967 ZM260 ZW263";
+    var regionName = function (c) {
+      try { return new Intl.DisplayNames(["de"], { type: "region" }).of(c) || c; } catch (e) { return c; }
+    };
+    var flag = function (c) { return String.fromCodePoint.apply(null, c.split("").map(function (ch) { return 127397 + ch.charCodeAt(0); })); };
+    var countries = DIAL.split(" ").map(function (t) { return { code: t.slice(0, 2), dial: t.slice(2), name: regionName(t.slice(0, 2)) }; });
+    var de = countries.filter(function (c) { return c.code === "DE"; })[0];
+    var rest = countries.filter(function (c) { return c.code !== "DE"; }).sort(function (a, b) { return a.name.localeCompare(b.name, "de"); });
+    var sel = trialForm.querySelector("[data-country-select]");
+    [de].concat(rest).forEach(function (c, k) {
+      var o = document.createElement("option");
+      o.value = c.code + ":+" + c.dial;
+      o.textContent = flag(c.code) + " " + c.name + " (+" + c.dial + ")";
+      if (k === 0) o.selected = true;
+      sel.appendChild(o);
+    });
+
+    var errEl = trialForm.querySelector("[data-form-error]");
+    var success = document.querySelector("[data-trial-success]");
+    var showError = function (msg) { errEl.textContent = msg; errEl.hidden = !msg; };
     trialForm.addEventListener("submit", function (e) {
       e.preventDefault();
-      var f = trialForm.elements, ok = true;
-      ["name", "device"].forEach(function (n) {
-        var bad = !f[n].value.trim();
-        f[n].classList.toggle("invalid", bad);
-        if (bad) ok = false;
-      });
-      trialForm.querySelector("[data-form-error]").hidden = ok;
-      if (!ok) return;
-      var text = "Hallo IPTV Welt Premium, ich möchte einen kostenlosen Test.\n" +
-        "Name: " + f.name.value.trim() + "\n" +
-        "Gerät: " + f.device.value +
-        (f.app.value.trim() ? "\nApp: " + f.app.value.trim() : "") +
-        (f.msg.value.trim() ? "\nNachricht: " + f.msg.value.trim() : "");
-      window.open(waLink(text), "_blank", "noopener");
+      var f = trialForm.elements;
+      var data = {
+        firstName: f.firstName.value.trim(),
+        email: f.email.value.trim(),
+        country: f.dial.value.split(":")[0],
+        dial: f.dial.value.split(":")[1],
+        phone: f.phone.value.replace(/[^\d]/g, "").replace(/^0+/, ""),
+        notes: f.notes.value.trim(),
+        website: f.website.value
+      };
+      var bad = {
+        firstName: !data.firstName,
+        email: !/^[^\s@]+@[^\s@]+\.[^\s@]{2,}$/.test(data.email),
+        phone: data.phone.length < 5 || data.phone.length > 15
+      };
+      Object.keys(bad).forEach(function (k) { f[k].classList.toggle("invalid", bad[k]); });
+      if (bad.firstName || bad.email || bad.phone) {
+        showError("Bitte füllen Sie Vorname, eine gültige E-Mail-Adresse und Ihre Handynummer aus.");
+        return;
+      }
+      showError("");
+      var btn = trialForm.querySelector("button[type=submit]");
+      btn.disabled = true;
+      fetch("/api/trial", { method: "POST", headers: { "Content-Type": "application/json" }, body: JSON.stringify(data) })
+        .then(function (r) { if (!r.ok) throw new Error(r.status); return r.json(); })
+        .then(function () {
+          trialForm.hidden = true;
+          success.querySelector("[data-success-email]").textContent = data.email;
+          success.hidden = false;
+          success.focus();
+          window.scrollTo({ top: 0 });
+        })
+        .catch(function () {
+          btn.disabled = false;
+          var text = "Hallo IPTV Welt Premium, ich möchte einen kostenlosen Test.\nVorname: " + data.firstName +
+            "\nE-Mail: " + data.email + "\nTelefon: " + data.dial + " " + data.phone + (data.notes ? "\nNotizen: " + data.notes : "");
+          errEl.innerHTML = "Das hat leider nicht geklappt. Bitte versuchen Sie es erneut oder fordern Sie Ihren Test per " +
+            '<a href="' + waLink(text) + '" target="_blank" rel="noopener">WhatsApp</a> an.';
+          errEl.hidden = false;
+        });
     });
   }
 

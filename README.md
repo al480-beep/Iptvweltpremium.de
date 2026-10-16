@@ -6,9 +6,11 @@ Static German landing page for IPTV Welt Premium. Plain HTML, CSS and JavaScript
 
 - `index.html` – homepage
 - `preise/index.html` – pricing page (device switch, plans, full price table, order dialog)
-- `kostenloser-test/index.html` – free trial page with request form
+- `kostenloser-test/index.html` – free trial page (first name, email, country code, phone, notes)
+- `functions/api/trial.js` – Cloudflare Pages Function behind the trial form; emails the request to `kontakt@` and a confirmation to the customer. Needs `RESEND_API_KEY` set in Cloudflare Pages (Settings → Variables and Secrets) and the domain verified at resend.com. Optional: `TRIAL_TO`, `TRIAL_FROM`, `TRIAL_WEBHOOK_URL` (to automate sending credentials)
+- `tools/sync_layout.py` – copies the shared header/footer from `index.html` to every page; run it after changing them (`python3 tools/sync_layout.py <new-version>` also bumps the CSS/JS `?v=`)
 - Every page uses the same two buttons: **Kostenlos testen** → `/kostenloser-test/`, **Jetzt starten** → `/preise/`
-- When `style.css` or `main.js` change, bump the `?v=` number in every page so browsers load the new file
+- When `style.css` or `main.js` change, bump the `?v=` number (`python3 tools/sync_layout.py <n>`) so browsers load the new file
 - `assets/css/style.css` – all styles
 - `assets/js/main.js` – pricing calculator, price table, order dialog, sliders, banners, animations
 - `assets/img/` – hero slideshow and highlight artwork (original, free to use)
