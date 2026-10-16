@@ -80,6 +80,9 @@
   // Preisrechner
   var current = 1;
   var switchEl = document.querySelector(".device-switch");
+  var modal = document.getElementById("order-modal");
+  var openModal = function () {};
+  if (switchEl) {
   var glider = switchEl.querySelector(".switch-glider");
   var buttons = switchEl.querySelectorAll("button");
 
@@ -135,11 +138,13 @@
   moveGlider(switchEl.querySelector("button.active"));
   renderPrices(current);
 
+  }
+
   // Bestell-Dialog
-  var modal = document.getElementById("order-modal");
+  if (modal) {
   var lastFocus = null;
 
-  function openModal(months, devices) {
+  openModal = function (months, devices) {
     if (devices) current = devices;
     var price = PRICES[current][months];
     modal.querySelector("[data-sum-plan]").textContent = DURATION_LABEL[months];
@@ -158,18 +163,19 @@
     modal.setAttribute("aria-hidden", "false");
     document.body.style.overflow = "hidden";
     modal.querySelector(".modal-close").focus();
-  }
-  function closeModal() {
+  };
+  var closeModal = function () {
     modal.classList.remove("open");
     modal.setAttribute("aria-hidden", "true");
     document.body.style.overflow = "";
     if (lastFocus) lastFocus.focus();
-  }
+  };
   document.querySelectorAll(".plan-btn").forEach(function (btn) {
     btn.addEventListener("click", function () { openModal(Number(btn.closest(".plan").dataset.months)); });
   });
   modal.querySelectorAll("[data-close]").forEach(function (el) { el.addEventListener("click", closeModal); });
   document.addEventListener("keydown", function (e) { if (e.key === "Escape" && modal.classList.contains("open")) closeModal(); });
+  }
 
   // Alle WhatsApp-/E-Mail-Links mit der Konfiguration füllen
   document.querySelectorAll("[data-wa]").forEach(function (a) {
@@ -186,7 +192,7 @@
 
   // Preisübersicht (alle Kombinationen)
   var matrix = document.querySelector("[data-matrix]");
-  if (matrix) {
+  if (matrix && switchEl) {
     [1, 3, 6, 12].forEach(function (m) {
       var tr = document.createElement("tr");
       if (m === 12) tr.className = "best";
@@ -210,26 +216,9 @@
     });
   }
 
-  // Ankündigungsleiste
-  var topbar = document.getElementById("topbar");
-  if (topbar) {
-    if (safeGet("topbar_closed")) topbar.classList.add("hide");
-    var msgs = topbar.querySelectorAll(".topbar-msg"), mi = 0;
-    if (!reduceMotion) setInterval(function () {
-      var cur = msgs[mi];
-      cur.classList.remove("active"); cur.classList.add("out");
-      setTimeout(function () { cur.classList.remove("out"); }, 500);
-      mi = (mi + 1) % msgs.length;
-      msgs[mi].classList.add("active");
-    }, 4500);
-    topbar.querySelector(".topbar-close").addEventListener("click", function () {
-      topbar.classList.add("hide");
-      safeSet("topbar_closed", "1");
-    });
-  }
-
   // Hero-Slideshow
   var slides = document.querySelectorAll(".hero-slide");
+  if (slides.length) {
   var heroDots = document.querySelectorAll(".hero-dots button");
   var si = 0, heroTimer;
   function showSlide(i) {
@@ -242,7 +231,8 @@
     if (!reduceMotion) heroTimer = setInterval(function () { showSlide((si + 1) % slides.length); }, 6000);
   }
   heroDots.forEach(function (d, i) { d.addEventListener("click", function () { showSlide(i); startHero(); }); });
-  if (slides.length) startHero();
+  startHero();
+  }
 
   // Highlights-Slider
   var slider = document.querySelector(".slider");
@@ -333,31 +323,25 @@
   window.addEventListener("scroll", function () { toTop.classList.toggle("show", window.scrollY > 900); }, { passive: true });
   toTop.addEventListener("click", function () { window.scrollTo({ top: 0 }); });
 
-  // Hinweis-Toast mit echten Vorteilen
-  var toast = document.querySelector(".toast");
-  var TIPS = [
-    ["Kostenloser Test", "Jetzt per WhatsApp anfragen, ganz ohne Zahlungsdaten."],
-    ["Schnelle Aktivierung", "Ihre Zugangsdaten kommen in 5 bis 15 Minuten."],
-    ["Bester Preis", "Das Jahrespaket kostet nur 4,08 € im Monat."],
-    ["Für die ganze Familie", "Bis zu 5 Geräte gleichzeitig in einem Abo."]
-  ];
-  if (toast && !safeGet("toast_closed")) {
-    var ti = 0, toastTimer;
-    var showTip = function () {
-      var ck = document.querySelector(".cookie");
-      if (ck && !ck.hidden) return;
-      toast.querySelector("[data-toast-title]").textContent = TIPS[ti][0];
-      toast.querySelector("[data-toast-text]").textContent = TIPS[ti][1];
-      toast.hidden = false;
-      requestAnimationFrame(function () { toast.classList.add("show"); });
-      setTimeout(function () { toast.classList.remove("show"); }, 6000);
-      ti = (ti + 1) % TIPS.length;
-    };
-    setTimeout(function () { showTip(); toastTimer = setInterval(showTip, 25000); }, 9000);
-    toast.querySelector(".toast-close").addEventListener("click", function () {
-      toast.classList.remove("show");
-      clearInterval(toastTimer);
-      safeSet("toast_closed", "1");
+  // Formular „Kostenlos testen“
+  var trialForm = document.querySelector("[data-trial-form]");
+  if (trialForm) {
+    trialForm.addEventListener("submit", function (e) {
+      e.preventDefault();
+      var f = trialForm.elements, ok = true;
+      ["name", "device"].forEach(function (n) {
+        var bad = !f[n].value.trim();
+        f[n].classList.toggle("invalid", bad);
+        if (bad) ok = false;
+      });
+      trialForm.querySelector("[data-form-error]").hidden = ok;
+      if (!ok) return;
+      var text = "Hallo IPTV Welt Premium, ich möchte einen kostenlosen Test.\n" +
+        "Name: " + f.name.value.trim() + "\n" +
+        "Gerät: " + f.device.value +
+        (f.app.value.trim() ? "\nApp: " + f.app.value.trim() : "") +
+        (f.msg.value.trim() ? "\nNachricht: " + f.msg.value.trim() : "");
+      window.open(waLink(text), "_blank", "noopener");
     });
   }
 
@@ -365,7 +349,8 @@
   var cookie = document.querySelector(".cookie");
   if (cookie && !safeGet("cookie_ok")) {
     cookie.hidden = false;
-    cookie.querySelector("[data-cookie]").addEventListener("click", function () {
+    cookie.querySelector("[data-cookie]").addEventListener("click", function (e) {
+      e.preventDefault();
       cookie.hidden = true;
       safeSet("cookie_ok", "1");
     });

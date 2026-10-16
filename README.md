@@ -4,7 +4,11 @@ Static German landing page for IPTV Welt Premium. Plain HTML, CSS and JavaScript
 
 ## Structure
 
-- `index.html` – main page (hero, features, pricing calculator, steps, devices, FAQ, contact)
+- `index.html` – homepage
+- `preise/index.html` – pricing page (device switch, plans, full price table, order dialog)
+- `kostenloser-test/index.html` – free trial page with request form
+- Every page uses the same two buttons: **Kostenlos testen** → `/kostenloser-test/`, **Jetzt starten** → `/preise/`
+- When `style.css` or `main.js` change, bump the `?v=` number in every page so browsers load the new file
 - `assets/css/style.css` – all styles
 - `assets/js/main.js` – pricing calculator, price table, order dialog, sliders, banners, animations
 - `assets/img/` – hero slideshow and highlight artwork (original, free to use)
