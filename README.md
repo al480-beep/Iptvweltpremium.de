@@ -6,7 +6,8 @@ Static German landing page for IPTV Welt Premium. Plain HTML, CSS and JavaScript
 
 - `index.html` – main page (hero, features, pricing calculator, steps, devices, FAQ, contact)
 - `assets/css/style.css` – all styles
-- `assets/js/main.js` – pricing calculator, order dialog, navigation, animations
+- `assets/js/main.js` – pricing calculator, price table, order dialog, sliders, banners, animations
+- `assets/img/` – hero slideshow and highlight artwork (original, free to use)
 - `impressum.html`, `datenschutz.html` – legal pages (fill in the placeholders before going live)
 - `.github/workflows/deploy.yml` – deploys to Cloudflare Pages on every push to `main`
 
@@ -14,8 +15,10 @@ Static German landing page for IPTV Welt Premium. Plain HTML, CSS and JavaScript
 
 In `assets/js/main.js`, at the top:
 
-- `CONFIG.whatsapp` – WhatsApp number in international format without `+` (e.g. `4915112345678`)
-- `CONFIG.email` – contact email
+- `CONFIG.whatsapp` – WhatsApp number in international format without `+` (e.g. `4915112345678`); currently a temporary placeholder
+- `CONFIG.whatsappDisplay` – the number as shown on the page
+- `CONFIG.email` – contact email (`kontakt@iptvweltpremium.de`)
+- `REVIEWS` – real customer reviews; the reviews slider stays hidden while this list is empty
 - `PRICES` – prices per number of devices and duration in months
 
 ## Deployment

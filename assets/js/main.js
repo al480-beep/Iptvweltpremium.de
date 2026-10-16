@@ -4,9 +4,19 @@
 
   // ---- Kontakt-Einstellungen: hier anpassen ----
   var CONFIG = {
-    whatsapp: "4900000000000", // internationale Nummer ohne + und Leerzeichen
-    email: "info@iptvweltpremium.de"
+    whatsapp: "490000000",          // internationale Nummer ohne + und Leerzeichen (vorläufig)
+    whatsappDisplay: "+49 000 0000", // so wird die Nummer auf der Seite angezeigt
+    email: "kontakt@iptvweltpremium.de"
   };
+
+  // ---- Kundenstimmen ----
+  // Nur echte Bewertungen eintragen. Solange die Liste leer ist, bleibt der Bereich ausgeblendet.
+  // Beispiel: { name: "Thomas K.", city: "Berlin", stars: 5, text: "Läuft super stabil ..." }
+  var REVIEWS = [];
+
+  var safeGet = function (k) { try { return localStorage.getItem(k); } catch (e) { return null; } };
+  var safeSet = function (k, v) { try { localStorage.setItem(k, v); } catch (e) {} };
+  var reduceMotion = window.matchMedia && window.matchMedia("(prefers-reduced-motion: reduce)").matches;
 
   // ---- Preise (Euro) je Geräteanzahl ----
   var PRICES = {
@@ -129,7 +139,8 @@
   var modal = document.getElementById("order-modal");
   var lastFocus = null;
 
-  function openModal(months) {
+  function openModal(months, devices) {
+    if (devices) current = devices;
     var price = PRICES[current][months];
     modal.querySelector("[data-sum-plan]").textContent = DURATION_LABEL[months];
     modal.querySelector("[data-sum-devices]").textContent = deviceLabel(current);
@@ -170,6 +181,195 @@
     a.href = "mailto:" + CONFIG.email;
     if (!a.children.length && a.textContent.trim() === "") a.textContent = CONFIG.email;
   });
+
+  document.querySelectorAll("[data-wa-display]").forEach(function (el) { el.textContent = CONFIG.whatsappDisplay; });
+
+  // Preisübersicht (alle Kombinationen)
+  var matrix = document.querySelector("[data-matrix]");
+  if (matrix) {
+    [1, 3, 6, 12].forEach(function (m) {
+      var tr = document.createElement("tr");
+      if (m === 12) tr.className = "best";
+      var html = "<td>" + DURATION_LABEL[m] + (m === 12 ? " 🏆" : "") + "</td>";
+      for (var d = 1; d <= 5; d++) {
+        var price = PRICES[d][m];
+        html += '<td><button class="matrix-buy" data-d="' + d + '" data-m="' + m + '" aria-label="' +
+          DURATION_LABEL[m] + ", " + deviceLabel(d) + " für " + euro(price) + ' € bestellen"><b>' + euro(price) +
+          " €</b><small>" + (m === 1 ? "einmalig" : euro(Math.round((price / m) * 100) / 100) + " €/Monat") + "</small></button></td>";
+      }
+      tr.innerHTML = html;
+      matrix.appendChild(tr);
+    });
+    matrix.addEventListener("click", function (e) {
+      var b = e.target.closest(".matrix-buy");
+      if (!b) return;
+      var d = Number(b.dataset.d);
+      var tab = switchEl.querySelector('button[data-devices="' + d + '"]');
+      if (tab && d !== current) tab.click();
+      openModal(Number(b.dataset.m), d);
+    });
+  }
+
+  // Ankündigungsleiste
+  var topbar = document.getElementById("topbar");
+  if (topbar) {
+    if (safeGet("topbar_closed")) topbar.classList.add("hide");
+    var msgs = topbar.querySelectorAll(".topbar-msg"), mi = 0;
+    if (!reduceMotion) setInterval(function () {
+      var cur = msgs[mi];
+      cur.classList.remove("active"); cur.classList.add("out");
+      setTimeout(function () { cur.classList.remove("out"); }, 500);
+      mi = (mi + 1) % msgs.length;
+      msgs[mi].classList.add("active");
+    }, 4500);
+    topbar.querySelector(".topbar-close").addEventListener("click", function () {
+      topbar.classList.add("hide");
+      safeSet("topbar_closed", "1");
+    });
+  }
+
+  // Hero-Slideshow
+  var slides = document.querySelectorAll(".hero-slide");
+  var heroDots = document.querySelectorAll(".hero-dots button");
+  var si = 0, heroTimer;
+  function showSlide(i) {
+    slides[si].classList.remove("active"); heroDots[si].classList.remove("active");
+    si = i;
+    slides[si].classList.add("active"); heroDots[si].classList.add("active");
+  }
+  function startHero() {
+    clearInterval(heroTimer);
+    if (!reduceMotion) heroTimer = setInterval(function () { showSlide((si + 1) % slides.length); }, 6000);
+  }
+  heroDots.forEach(function (d, i) { d.addEventListener("click", function () { showSlide(i); startHero(); }); });
+  if (slides.length) startHero();
+
+  // Highlights-Slider
+  var slider = document.querySelector(".slider");
+  if (slider) {
+    var bar = document.querySelector(".slider-progress i");
+    var step = function () { var s = slider.querySelector(".slide"); return s ? s.offsetWidth + 18 : 300; };
+    var updateBar = function () {
+      var max = slider.scrollWidth - slider.clientWidth;
+      var vis = slider.clientWidth / slider.scrollWidth;
+      bar.style.width = Math.max(vis * 100, 12) + "%";
+      bar.style.marginLeft = (max > 0 ? (slider.scrollLeft / max) * (100 - Math.max(vis * 100, 12)) : 0) + "%";
+    };
+    var go = function (dir) {
+      var max = slider.scrollWidth - slider.clientWidth - 4;
+      if (dir > 0 && slider.scrollLeft >= max) slider.scrollTo({ left: 0 });
+      else slider.scrollBy({ left: dir * step() });
+    };
+    document.querySelectorAll(".slider-btn").forEach(function (b) {
+      b.addEventListener("click", function () { go(Number(b.dataset.dir)); });
+    });
+    slider.addEventListener("scroll", updateBar, { passive: true });
+    window.addEventListener("resize", updateBar);
+    updateBar();
+    var paused = false;
+    ["pointerenter", "focusin", "touchstart"].forEach(function (ev) { slider.addEventListener(ev, function () { paused = true; }, { passive: true }); });
+    ["pointerleave", "focusout"].forEach(function (ev) { slider.addEventListener(ev, function () { paused = false; }); });
+    if (!reduceMotion) setInterval(function () {
+      var r = slider.getBoundingClientRect();
+      if (!paused && r.top < innerHeight && r.bottom > 0) go(1);
+    }, 4000);
+  }
+
+  // Kundenstimmen-Slider
+  var reviewSec = document.getElementById("bewertungen");
+  if (reviewSec && REVIEWS.length) {
+    reviewSec.hidden = false;
+    var track = reviewSec.querySelector(".review-track");
+    var dotsEl = reviewSec.querySelector(".review-dots");
+    var esc = function (t) { var d = document.createElement("div"); d.textContent = t; return d.innerHTML; };
+    track.innerHTML = REVIEWS.map(function (r) {
+      return '<div class="review"><div class="review-card"><div class="review-stars">' + "★★★★★".slice(0, r.stars || 5) +
+        "</div><p>„" + esc(r.text) + '“</p><div class="review-author"><span class="review-avatar">' + esc(r.name.charAt(0)) +
+        "</span><span>" + esc(r.name) + "<small>" + esc(r.city || "") + "</small></span></div></div></div>";
+    }).join("");
+    var perView = function () { return innerWidth <= 640 ? 1 : innerWidth <= 1080 ? 2 : 3; };
+    var ri = 0;
+    var pages = function () { return Math.max(1, REVIEWS.length - perView() + 1); };
+    var renderDots = function () {
+      dotsEl.innerHTML = "";
+      for (var i = 0; i < pages(); i++) {
+        var b = document.createElement("button");
+        b.setAttribute("aria-label", "Bewertung " + (i + 1));
+        b.addEventListener("click", (function (n) { return function () { goReview(n); }; })(i));
+        dotsEl.appendChild(b);
+      }
+    };
+    var goReview = function (n) {
+      ri = (n + pages()) % pages();
+      track.style.transform = "translateX(" + (-ri * 100 / perView()) + "%)";
+      dotsEl.querySelectorAll("button").forEach(function (b, i) { b.classList.toggle("active", i === ri); });
+    };
+    renderDots(); goReview(0);
+    window.addEventListener("resize", function () { renderDots(); goReview(Math.min(ri, pages() - 1)); });
+    if (!reduceMotion) setInterval(function () { goReview(ri + 1); }, 5500);
+  }
+
+  // Interaktive Schritte
+  var stepsEl = document.querySelector("[data-steps]");
+  if (stepsEl) {
+    var stepItems = stepsEl.querySelectorAll(".step");
+    var line = stepsEl.querySelector(".steps-line i");
+    var sti = 0, stepTimer;
+    var setStep = function (i) {
+      sti = i;
+      stepItems.forEach(function (el, k) { el.classList.toggle("active", k === i); });
+      line.style.width = ((i + 1) / stepItems.length) * 100 + "%";
+    };
+    var runSteps = function () {
+      clearInterval(stepTimer);
+      if (!reduceMotion) stepTimer = setInterval(function () { setStep((sti + 1) % stepItems.length); }, 3000);
+    };
+    stepItems.forEach(function (el, k) { el.addEventListener("click", function () { setStep(k); runSteps(); }); });
+    setStep(0); runSteps();
+  }
+
+  // Nach-oben-Button
+  var toTop = document.querySelector(".to-top");
+  window.addEventListener("scroll", function () { toTop.classList.toggle("show", window.scrollY > 900); }, { passive: true });
+  toTop.addEventListener("click", function () { window.scrollTo({ top: 0 }); });
+
+  // Hinweis-Toast mit echten Vorteilen
+  var toast = document.querySelector(".toast");
+  var TIPS = [
+    ["Kostenloser Test", "Jetzt per WhatsApp anfragen, ganz ohne Zahlungsdaten."],
+    ["Schnelle Aktivierung", "Ihre Zugangsdaten kommen in 5 bis 15 Minuten."],
+    ["Bester Preis", "Das Jahrespaket kostet nur 4,08 € im Monat."],
+    ["Für die ganze Familie", "Bis zu 5 Geräte gleichzeitig in einem Abo."]
+  ];
+  if (toast && !safeGet("toast_closed")) {
+    var ti = 0, toastTimer;
+    var showTip = function () {
+      var ck = document.querySelector(".cookie");
+      if (ck && !ck.hidden) return;
+      toast.querySelector("[data-toast-title]").textContent = TIPS[ti][0];
+      toast.querySelector("[data-toast-text]").textContent = TIPS[ti][1];
+      toast.hidden = false;
+      requestAnimationFrame(function () { toast.classList.add("show"); });
+      setTimeout(function () { toast.classList.remove("show"); }, 6000);
+      ti = (ti + 1) % TIPS.length;
+    };
+    setTimeout(function () { showTip(); toastTimer = setInterval(showTip, 25000); }, 9000);
+    toast.querySelector(".toast-close").addEventListener("click", function () {
+      toast.classList.remove("show");
+      clearInterval(toastTimer);
+      safeSet("toast_closed", "1");
+    });
+  }
+
+  // Datenschutz-Hinweis
+  var cookie = document.querySelector(".cookie");
+  if (cookie && !safeGet("cookie_ok")) {
+    cookie.hidden = false;
+    cookie.querySelector("[data-cookie]").addEventListener("click", function () {
+      cookie.hidden = true;
+      safeSet("cookie_ok", "1");
+    });
+  }
 
   var year = document.getElementById("year");
   if (year) year.textContent = new Date().getFullYear();

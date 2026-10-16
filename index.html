@@ -74,6 +74,17 @@
 <div class="bg-grid" aria-hidden="true"></div>
 
 <header class="header">
+  <div class="topbar" id="topbar">
+    <div class="container topbar-inner">
+      <div class="topbar-track" aria-live="polite">
+        <span class="topbar-msg active">🔥 <b>Kostenloser Test</b> verfügbar: jetzt per WhatsApp anfragen</span>
+        <span class="topbar-msg">⚡ Aktivierung in <b>5 bis 15 Minuten</b> nach Zahlungseingang</span>
+        <span class="topbar-msg">🏆 Jahrespaket ab <b>4,08 € im Monat</b>, ohne automatische Verlängerung</span>
+      </div>
+      <a href="#preise" class="topbar-cta">Angebote ansehen →</a>
+      <button class="topbar-close" aria-label="Hinweis schließen"><svg><use href="#i-close"/></svg></button>
+    </div>
+  </div>
   <nav class="container nav" aria-label="Hauptnavigation">
     <a href="/" class="logo" aria-label="IPTV Welt Premium Startseite">
       <svg class="logo-mark" viewBox="0 0 40 40" aria-hidden="true"><rect width="40" height="40" rx="12" fill="url(#lg)"/><circle cx="20" cy="20" r="11" fill="none" stroke="#160b02" stroke-width="2.2"/><path d="M9 20h22M20 9c3.5 3.2 3.5 18.8 0 22M20 9c-3.5 3.2-3.5 18.8 0 22" fill="none" stroke="#160b02" stroke-width="1.8"/><path d="M17.5 16.5v7l6-3.5z" fill="#160b02"/></svg>
@@ -83,6 +94,7 @@
       <li><a href="#vorteile">Vorteile</a></li>
       <li><a href="#preise">Preise</a></li>
       <li><a href="#inhalte">Inhalte</a></li>
+      <li><a href="#sport">Sport</a></li>
       <li><a href="#geraete">Geräte</a></li>
       <li><a href="#faq">FAQ</a></li>
       <li><a href="#kontakt">Kontakt</a></li>
@@ -98,6 +110,15 @@
 <main>
   <!-- Hero -->
   <section class="hero" aria-label="Einleitung">
+    <div class="hero-slides" aria-hidden="true">
+      <div class="hero-slide active" style="background-image:url('/assets/img/hero-1.jpg')"></div>
+      <div class="hero-slide" style="background-image:url('/assets/img/hero-2.jpg')"></div>
+      <div class="hero-slide" style="background-image:url('/assets/img/hero-3.jpg')"></div>
+    </div>
+    <div class="hero-overlay" aria-hidden="true"></div>
+    <div class="hero-dots" role="tablist" aria-label="Titelbilder">
+      <button class="active" aria-label="Bild 1"></button><button aria-label="Bild 2"></button><button aria-label="Bild 3"></button>
+    </div>
     <div class="container">
       <div class="hero-grid">
         <div>
@@ -118,7 +139,7 @@
         <div class="tv-wrap reveal d2" aria-hidden="true">
           <div class="tv">
             <div class="tv-screen">
-              <div class="tv-hero-img"></div>
+              <div class="tv-hero-img" style="background-image:url('/assets/img/card-football.jpg')"></div>
               <div class="tv-ui">
                 <div class="tv-top">
                   <span class="tv-badge"><span class="live-dot"></span> LIVE</span>
@@ -157,6 +178,60 @@
           <span>⚽ Fußball live</span><span>🏎️ Motorsport</span><span>🎾 Tennis</span><span>🏀 Basketball</span><span>🎬 Kinofilme</span><span>📺 Serien</span><span>📰 Nachrichten</span><span>🧸 Kinder</span><span>🌍 International</span><span>🎵 Musik</span><span>🥊 Kampfsport</span><span>🎞️ Dokus</span>
         </div>
       </div>
+    </div>
+  </section>
+
+  <!-- Garantie -->
+  <section class="guarantee-wrap" aria-label="Zufriedenheitsgarantie">
+    <div class="container">
+      <div class="guarantee reveal">
+        <div class="guarantee-icon"><svg><use href="#i-shield"/></svg></div>
+        <div>
+          <h3>Zufriedenheitsgarantie: erst testen, dann zahlen</h3>
+          <p>Testen Sie IPTV Welt Premium kostenlos und ohne Zahlungsdaten. Sie zahlen erst, wenn Bild, Senderauswahl und Stabilität Sie überzeugt haben. Bei Fragen hilft unser 24/7 WhatsApp-Support sofort.</p>
+        </div>
+        <a href="#" class="btn btn-primary" data-wa="Hallo IPTV Welt Premium, ich möchte einen kostenlosen Test.">Test starten</a>
+      </div>
+    </div>
+  </section>
+
+  <!-- Highlights-Slider -->
+  <section id="highlights" class="highlights">
+    <div class="container">
+      <div class="slider-head reveal">
+        <div>
+          <span class="eyebrow">Highlights</span>
+          <h2 class="display">Ihr Programm. <span class="grad-text">Ihre Bühne.</span></h2>
+        </div>
+        <div class="slider-arrows">
+          <button class="slider-btn" data-dir="-1" aria-label="Zurück"><svg style="transform:rotate(180deg)"><use href="#i-arrow"/></svg></button>
+          <button class="slider-btn" data-dir="1" aria-label="Weiter"><svg><use href="#i-arrow"/></svg></button>
+        </div>
+      </div>
+    </div>
+    <div class="slider reveal" tabindex="0" aria-label="Highlights">
+      <article class="slide" style="background-image:url('/assets/img/card-football.jpg')"><span class="slide-tag"><span class="live-dot"></span> LIVE</span><div class="slide-body"><h3>Fußball live</h3><p>Liga, Pokal und internationale Wettbewerbe in flüssigem 4K.</p></div></article>
+      <article class="slide" style="background-image:url('/assets/img/card-motorsport.jpg')"><span class="slide-tag">4K</span><div class="slide-body"><h3>Motorsport</h3><p>Jedes Rennen, jedes Qualifying, jede Runde live mitverfolgen.</p></div></article>
+      <article class="slide" style="background-image:url('/assets/img/card-cinema.jpg')"><span class="slide-tag">VOD</span><div class="slide-body"><h3>Kino zu Hause</h3><p>Aktuelle Filme und Klassiker auf Abruf, wann immer Sie wollen.</p></div></article>
+      <article class="slide" style="background-image:url('/assets/img/card-series.jpg')"><span class="slide-tag">Serien</span><div class="slide-body"><h3>Serien-Marathon</h3><p>Komplette Staffeln ohne Wartezeit, in Deutsch und Originalton.</p></div></article>
+      <article class="slide" style="background-image:url('/assets/img/card-events.jpg')"><span class="slide-tag">PPV</span><div class="slide-body"><h3>Große Events</h3><p>Kampfsport, Konzerte und Sonderübertragungen live dabei.</p></div></article>
+      <article class="slide" style="background-image:url('/assets/img/card-kids.jpg')"><span class="slide-tag">Familie</span><div class="slide-body"><h3>Kinderwelt</h3><p>Zeichentrick und Familienprogramm mit Jugendschutz-Option.</p></div></article>
+    </div>
+    <div class="container"><div class="slider-progress"><i></i></div></div>
+  </section>
+
+  <!-- Bewertungen: erscheinen automatisch, sobald in main.js echte Kundenstimmen eingetragen sind -->
+  <section id="bewertungen" class="reviews" hidden>
+    <div class="container">
+      <div class="section-head reveal">
+        <span class="eyebrow">Kundenstimmen</span>
+        <h2 class="display">Was unsere <span class="grad-text">Kunden sagen</span></h2>
+        <p>Echte Rückmeldungen von Kundinnen und Kunden aus Deutschland.</p>
+      </div>
+      <div class="review-viewport reveal">
+        <div class="review-track"></div>
+      </div>
+      <div class="review-dots" role="tablist" aria-label="Bewertungen"></div>
     </div>
   </section>
 
@@ -293,6 +368,22 @@
         <span><svg><use href="#i-bolt"/></svg>Aktivierung in 5 bis 15 Minuten</span>
         <span><svg><use href="#i-shield"/></svg>Keine automatische Verlängerung</span>
       </div>
+
+      <div class="matrix reveal">
+        <div class="matrix-head">
+          <h3>Alle Preise im Überblick</h3>
+          <p>Klicken Sie auf einen Preis, um direkt zu bestellen.</p>
+        </div>
+        <div class="matrix-scroll">
+          <table>
+            <thead>
+              <tr><th scope="col">Laufzeit</th><th scope="col">1 Gerät</th><th scope="col">2 Geräte</th><th scope="col">3 Geräte</th><th scope="col">4 Geräte</th><th scope="col">5 Geräte</th></tr>
+            </thead>
+            <tbody data-matrix></tbody>
+          </table>
+        </div>
+        <p class="matrix-note">Alle Preise in Euro inkl. MwSt. · Einmalzahlung · Keine automatische Verlängerung · Kein Vertrag</p>
+      </div>
     </div>
   </section>
 
@@ -304,8 +395,9 @@
         <h2 class="display">In 3 Schritten zum <span class="grad-text">Premium-TV</span></h2>
         <p>Kein Techniker, kein Papierkram, keine Wartezeit.</p>
       </div>
-      <div class="steps">
-        <div class="step reveal">
+      <div class="steps" data-steps>
+        <div class="steps-line" aria-hidden="true"><i></i></div>
+        <div class="step reveal active">
           <div class="step-num">01</div>
           <h3>Paket wählen</h3>
           <p>Geräteanzahl und Laufzeit aussuchen und bequem per WhatsApp oder E-Mail bestellen.</p>
@@ -320,6 +412,16 @@
           <h3>Zurücklehnen &amp; genießen</h3>
           <p>App öffnen, Daten eingeben, fertig. Auf Wunsch richten wir alles gemeinsam mit Ihnen ein.</p>
         </div>
+      </div>
+      <div class="hero-actions" style="justify-content:center;margin-bottom:0"><a href="#preise" class="btn btn-primary">Jetzt Paket wählen <svg><use href="#i-arrow"/></svg></a></div>
+
+      <div class="specs reveal">
+        <div class="spec"><b>5–15 Min</b><span>Aktivierung</span></div>
+        <div class="spec"><b>16 Mbit/s</b><span>empfohlen für HD</span></div>
+        <div class="spec"><b>30 Mbit/s</b><span>empfohlen für 4K</span></div>
+        <div class="spec"><b>1–5</b><span>Geräte gleichzeitig</span></div>
+        <div class="spec"><b>0 €</b><span>Testzugang</span></div>
+        <div class="spec"><b>24/7</b><span>WhatsApp-Support</span></div>
       </div>
     </div>
   </section>
@@ -346,6 +448,28 @@
         <div class="tile t4"><span class="emoji">📺</span><b>Serien</b><small>Ganze Staffeln</small></div>
         <div class="tile t5"><span class="emoji">🥊</span><b>Events</b><small>Live dabei</small></div>
         <div class="tile t6"><span class="emoji">🧸</span><b>Kids</b><small>Für die Kleinen</small></div>
+      </div>
+    </div>
+  </section>
+
+  <!-- Live-Sport -->
+  <section id="sport" class="sport">
+    <div class="sport-bg" aria-hidden="true" style="background-image:url('/assets/img/hero-3.jpg')"></div>
+    <div class="container sport-inner">
+      <div class="reveal">
+        <span class="eyebrow">Live-Sport</span>
+        <h2 class="display">Jedes Spiel. Live. <span class="grad-text">In 4K.</span></h2>
+        <p>Fußball, Motorsport, Tennis und große Kampfabende laufen bei uns ohne Einfrieren, auch wenn ganz Deutschland gleichzeitig einschaltet.</p>
+        <div class="tags"><span>Fußball</span><span>Motorsport</span><span>Tennis</span><span>Basketball</span><span>Eishockey</span><span>Kampfsport</span><span>PPV-Events</span></div>
+        <a href="#preise" class="btn btn-primary">Zugriff sichern <svg><use href="#i-arrow"/></svg></a>
+      </div>
+      <div class="sport-grid reveal d1">
+        <div class="sport-card"><span>⚽</span><b>Fußball</b></div>
+        <div class="sport-card"><span>🏎️</span><b>Motorsport</b></div>
+        <div class="sport-card"><span>🎾</span><b>Tennis</b></div>
+        <div class="sport-card"><span>🏀</span><b>Basketball</b></div>
+        <div class="sport-card"><span>🏒</span><b>Eishockey</b></div>
+        <div class="sport-card"><span>🥊</span><b>PPV-Events</b></div>
       </div>
     </div>
   </section>
@@ -382,6 +506,21 @@
           <span><svg><use href="#i-check-c"/></svg>Voller Zugriff im Testzeitraum</span>
           <span><svg><use href="#i-check-c"/></svg>Keine Zahlungsdaten nötig</span>
           <span><svg><use href="#i-check-c"/></svg>Persönliche Einrichtungshilfe</span>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <!-- Ratgeber -->
+  <section id="wissen" class="knowledge">
+    <div class="container">
+      <div class="knowledge-box reveal">
+        <span class="eyebrow">Gut zu wissen</span>
+        <h2 class="display">IPTV kaufen in Deutschland: <span class="grad-text">der schnelle Überblick</span></h2>
+        <div class="knowledge-cols">
+          <p>Wer 2026 IPTV kaufen möchte, hat die Wahl zwischen unzähligen Diensten, doch die Qualitätsunterschiede sind enorm. Einen guten IPTV-Anbieter erkennen Sie an drei Dingen: stabilen Servern, die auch zur Hauptsendezeit nicht einbrechen, erreichbarem deutschsprachigem Support und der Möglichkeit, vor dem Kauf kostenlos zu testen.</p>
+          <p>Genau deshalb gibt es bei IPTV Welt Premium vor jedem Abo einen unverbindlichen Test: Sie prüfen Bildqualität, Senderauswahl und Stabilität auf Ihrem eigenen Gerät. Läuft alles flüssig, wählen Sie einfach Laufzeit und Geräteanzahl, ab 9 € im Monat und ohne automatische Verlängerung.</p>
+          <p>Technisch brauchen Sie weniger, als viele denken: eine stabile Internetverbindung und ein Gerät mit passender IPTV-App, vom Smart-TV über den TV-Stick bis zum Smartphone. Die Einrichtung begleitet unser Support auf Wunsch Schritt für Schritt.</p>
         </div>
       </div>
     </div>
@@ -438,6 +577,7 @@
           <div class="icon"><svg><use href="#i-wa"/></svg></div>
           <h3>WhatsApp</h3>
           <p>Die schnellste Antwort auf Bestellungen, Tests und Einrichtungsfragen.</p>
+          <p class="contact-value" data-wa-display></p>
           <a href="#" class="link" data-wa>Chat starten →</a>
         </div>
         <div class="card contact-card reveal d1">
@@ -499,6 +639,20 @@
 </footer>
 
 <a href="#" class="wa-float" data-wa aria-label="Per WhatsApp kontaktieren"><svg><use href="#i-wa"/></svg></a>
+<button class="to-top" aria-label="Nach oben scrollen"><svg style="transform:rotate(-90deg)"><use href="#i-arrow"/></svg></button>
+
+<div class="toast" role="status" aria-live="polite" hidden>
+  <div class="toast-icon"><svg><use href="#i-bolt"/></svg></div>
+  <div class="toast-body"><b data-toast-title></b><span data-toast-text></span></div>
+  <button class="toast-close" aria-label="Schließen"><svg><use href="#i-close"/></svg></button>
+</div>
+
+<div class="cookie" role="dialog" aria-label="Hinweis zum Datenschutz" hidden>
+  <p>🍪 Wir verwenden keine Tracking-Cookies, nur technisch notwendige Speicherung. Mehr in der <a href="/datenschutz.html">Datenschutzerklärung</a>.</p>
+  <div class="cookie-actions">
+    <button class="btn btn-primary btn-sm" data-cookie="ok">Verstanden</button>
+  </div>
+</div>
 
 <!-- Bestell-Dialog -->
 <div class="modal" id="order-modal" role="dialog" aria-modal="true" aria-labelledby="order-title" aria-hidden="true">
