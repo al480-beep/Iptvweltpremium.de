@@ -7,7 +7,7 @@
     whatsapp: "490000000",          // internationale Nummer ohne + und Leerzeichen (vorläufig)
     whatsappDisplay: "+49 000 0000", // so wird die Nummer auf der Seite angezeigt
     email: "kontakt@iptvweltpremium.de",
-    // Bestellungen gehen über EmailJS an kontakt@ (der öffentliche Schlüssel darf im Browser stehen)
+    // Ersatzweg für Bestellungen, falls /api/order ausfällt (der öffentliche Schlüssel darf im Browser stehen)
     emailjs: { service: "service_8qunnth", template: "template_kir731r", publicKey: "R6r0yfArKg9oG_O0g" }
   };
 
@@ -377,31 +377,37 @@
       var btn = trialForm.querySelector("button[type=submit]");
       btn.disabled = true;
       var countryName = regionName(data.country);
+      // Bestellungen: zuerst über /api/order (Resend), bei einem Fehler über EmailJS
+      var sendViaEmailjs = function () {
+        return fetch("https://api.emailjs.com/api/v1.0/email/send", {
+          method: "POST",
+          headers: { "Content-Type": "application/json" },
+          body: JSON.stringify({
+            service_id: CONFIG.emailjs.service,
+            template_id: CONFIG.emailjs.template,
+            user_id: CONFIG.emailjs.publicKey,
+            template_params: {
+              site_name: "IPTV Welt Premium",
+              plan: DURATION_LABEL[order.months] + ", " + deviceLabel(order.devices) + " – " + euro(order.price) + " €" +
+                (order.months === 12 ? " (inkl. IBO Player Pro Premium Abo)" : ""),
+              price: euro(order.price) + " €",
+              device: deviceLabel(order.devices),
+              name: data.firstName,
+              from_name: data.firstName,
+              from_email: data.email,
+              email: data.email,
+              phone: data.dial + " " + data.phone,
+              country: countryName + " (" + data.country + ")",
+              message: data.notes || "–",
+              time: new Date().toLocaleString("de-DE")
+            }
+          })
+        }).then(function (r) { if (!r.ok) throw new Error(r.status); return {}; });
+      };
       var request = order
-        ? fetch("https://api.emailjs.com/api/v1.0/email/send", {
-            method: "POST",
-            headers: { "Content-Type": "application/json" },
-            body: JSON.stringify({
-              service_id: CONFIG.emailjs.service,
-              template_id: CONFIG.emailjs.template,
-              user_id: CONFIG.emailjs.publicKey,
-              template_params: {
-                site_name: "IPTV Welt Premium",
-                plan: DURATION_LABEL[order.months] + ", " + deviceLabel(order.devices) + " – " + euro(order.price) + " €" +
-                  (order.months === 12 ? " (inkl. IBO Player Pro Premium Abo)" : ""),
-                price: euro(order.price) + " €",
-                device: deviceLabel(order.devices),
-                name: data.firstName,
-                from_name: data.firstName,
-                from_email: data.email,
-                email: data.email,
-                phone: data.dial + " " + data.phone,
-                country: countryName + " (" + data.country + ")",
-                message: data.notes || "–",
-                time: new Date().toLocaleString("de-DE")
-              }
-            })
-          }).then(function (r) { if (!r.ok) throw new Error(r.status); return {}; })
+        ? fetch("/api/order", { method: "POST", headers: { "Content-Type": "application/json" }, body: JSON.stringify(data) })
+            .then(function (r) { if (!r.ok) throw new Error(r.status); return {}; })
+            .catch(sendViaEmailjs)
         : fetch("/api/trial", { method: "POST", headers: { "Content-Type": "application/json" }, body: JSON.stringify(data) })
             .then(function (r) {
               if (r.status === 409) { var e = new Error("used"); e.used = true; throw e; }
