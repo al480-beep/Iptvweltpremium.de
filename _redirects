@@ -55,3 +55,15 @@
 # Startseiten-Varianten
 /index                    /                             301
 /home                     /                             301
+
+# Neue Seiten (Runde 2)
+/stick                    /iptv-stick/                  301
+/iptv-sticks              /iptv-stick/                  301
+/chromecast               /iptv-stick/                  301
+/google-tv                /iptv-stick/                  301
+/roku                     /iptv-stick/                  301
+/stream                   /iptv-stream/                 301
+/iptv-streaming           /iptv-stream/                 301
+/live-tv                  /iptv-stream/                 301
+/georgien                 /iptv-georgien/               301
+/iptv-georgisch           /iptv-georgien/               301

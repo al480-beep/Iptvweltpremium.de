@@ -13,7 +13,7 @@ SEO = pathlib.Path(__file__).resolve().parent
 SITE = "https://iptvweltpremium.de"
 BRAND = "IPTV Welt Premium"
 UPDATED = "2026-10-17"          # change only when the content really changes
-CSS_V = "12"
+CSS_V = "13"
 OG_IMAGE = f"{SITE}/assets/img/og-image.jpg"
 
 # Pages that already exist outside the generator (for breadcrumbs and related links)
@@ -25,17 +25,45 @@ STATIC = {
 
 
 def load_pages():
-    pages = []
+    pages, extend = [], []
     for f in sorted(SEO.glob("pages_*.py")):
         spec = importlib.util.spec_from_file_location(f.stem, f)
         mod = importlib.util.module_from_spec(spec)
         spec.loader.exec_module(mod)
-        pages.extend(mod.PAGES)
+        pages.extend(getattr(mod, "PAGES", []))
+        extend.append(getattr(mod, "EXTEND", {}))
     slugs = [p["slug"] for p in pages]
     dupes = {s for s in slugs if slugs.count(s) > 1}
     if dupes:
         sys.exit(f"duplicate slugs: {dupes}")
-    return {p["slug"]: p for p in pages}
+    pages = {p["slug"]: p for p in pages}
+    # EXTEND = {slug: {...}} adds depth to a page defined in another module:
+    # kw_add / kw_remove, replace [(old, new)], into / swap (by h2 id), body (appended), faq (appended), related, title, desc
+    for ext in extend:
+        for slug, e in ext.items():
+            p = pages[slug]
+            p["kw"] = [k for k in p["kw"] if k not in e.get("kw_remove", [])] + e.get("kw_add", [])
+            for old, new in e.get("replace", []):
+                if old not in p["body"]:
+                    sys.exit(f"{slug}: replace target not found: {old[:60]}")
+                p["body"] = p["body"].replace(old, new)
+            # into {h2_id: html}: add to the end of that section; swap {h2_id: html}: replace the whole section
+            for sid, add in list(e.get("into", {}).items()) + [(k, None) for k in e.get("swap", {})]:
+                m = re.search(rf'<h2 id="{sid}">', p["body"])
+                if not m:
+                    sys.exit(f"{slug}: section #{sid} not found")
+                nxt = p["body"].find("<h2", m.end())
+                end = nxt if nxt != -1 else len(p["body"])
+                if add is None:
+                    p["body"] = p["body"][:m.start()] + e["swap"][sid].strip() + "\n\n" + p["body"][end:]
+                else:
+                    p["body"] = p["body"][:end].rstrip() + "\n" + add.strip() + "\n\n" + p["body"][end:]
+            p["body"] += e.get("body", "")
+            p["faq"] = list(p.get("faq", [])) + e.get("faq", [])
+            for k in ("related", "title", "desc", "app", "about"):
+                if k in e:
+                    p[k] = e[k]
+    return pages
 
 
 def layout(master, name):
@@ -127,6 +155,16 @@ def render(page, pages, master, plans_block):
             main.pop(k)
     if page.get("about"):
         main["about"] = [{"@type": "Thing", "name": a} for a in page["about"]]
+    if page.get("app"):
+        # The app the guide is about (no ratings or prices: we only describe what the page explains)
+        a = page["app"]
+        main["about"] = {"@type": "SoftwareApplication", "name": a["name"], "applicationCategory": "MultimediaApplication",
+                         "operatingSystem": a["os"], **({"url": a["url"]} if a.get("url") else {})}
+    if kind == "CollectionPage":
+        kids = [s for s, p in pages.items() if p.get("parent") == slug]
+        if kids:
+            main["mainEntity"] = {"@type": "ItemList", "itemListElement": [
+                {"@type": "ListItem", "position": i + 1, "url": url(s), "name": pages[s]["nav"]} for i, s in enumerate(kids)]}
     graph = [org, {"@type": "WebSite", "@id": f"{SITE}/#website", "name": BRAND, "url": f"{SITE}/",
                    "inLanguage": "de-DE", "publisher": {"@id": f"{SITE}/#org"}}, main,
              {"@type": "BreadcrumbList", "@id": url(slug) + "#breadcrumb", "itemListElement": [

@@ -838,3 +838,4 @@ section { padding: 110px 0; position: relative; }
 .trial-lead { text-align: center; color: var(--text-2); margin: -18px 0 30px; }
 .trial-page .trial-bg { bottom: auto; height: 1100px; }
 .trial-page .article { padding-top: 0; }
+.prose code { font-family: ui-monospace, SFMono-Regular, Menlo, monospace; font-size: .88em; color: var(--text); background: var(--surface); border: 1px solid var(--line); padding: 1px 6px; border-radius: 6px; overflow-wrap: anywhere; }
