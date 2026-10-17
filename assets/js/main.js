@@ -179,7 +179,7 @@
 
   // Hero-Slideshow
   var slides = document.querySelectorAll(".hero-slide");
-  if (slides.length) {
+  if (slides.length > 1) {
   var heroDots = document.querySelectorAll(".hero-dots button");
   var si = 0, heroTimer;
   function showSlide(i) {
