@@ -19,9 +19,10 @@
 //   REMINDER_HOURS  optional – hours before the end to send the reminder (default 12, 0 = no reminder)
 //   TRIAL_TO        optional – internal copy (default kontakt@iptvweltpremium.de)
 //   TRIAL_FROM      optional – sender (default "IPTV Welt Premium <kontakt@iptvweltpremium.de>")
-// KV binding (optional, strongly recommended): TRIAL_KV – allows one trial per e-mail, phone and IP
-// and lets order mails show the customer's earlier trial.
-import { readContact, json, sendMail, mailFrom, mailTo } from "./_shared.js";
+//   TRIAL_IP_LIMIT  optional – max trials per IP address per hour, against bots (default 5)
+// KV binding (optional, strongly recommended): TRIAL_KV – remembers each customer's latest trial so order mails can
+// show it, a repeat trial replaces the old reminder, and the per-IP limit works. Customers may request several trials.
+import { readContact, json, sendMail, cancelMail, mailFrom, mailTo, findTrial } from "./_shared.js";
 import { trialCustomerMail, reminderMail, internalMail, berlinTime } from "./_emails.js";
 
 const API_URLS = ["https://activationpanel.net/api/api.php", "https://activationpanel.ru/api/api.php"];
@@ -94,13 +95,16 @@ export async function onRequestPost({ request, env }) {
   const to = mailTo(env);
   const from = mailFrom(env);
   const ip = request.headers.get("CF-Connecting-IP") || "";
-  const keys = [`e:${c.email.toLowerCase()}`, `p:${c.dial}${c.phone}`, ip && `ip:${ip}`].filter(Boolean);
+  const keys = [`e:${c.email.toLowerCase()}`, `p:${c.dial}${c.phone}`];
 
-  // One trial per e-mail address, phone number and IP (only when the TRIAL_KV binding exists).
-  if (env.TRIAL_KV) {
-    const seen = await Promise.all(keys.map((k) => env.TRIAL_KV.get(k)));
-    if (seen.some(Boolean)) return json({ error: "already_used" }, 409);
+  // Customers may request a trial as often as they like; only bots hammering from one IP are slowed down.
+  const ipKey = ip && `ip:${ip}`;
+  if (env.TRIAL_KV && ipKey) {
+    const count = Number(await env.TRIAL_KV.get(ipKey)) || 0;
+    if (count >= Number(env.TRIAL_IP_LIMIT || 5)) return json({ error: "rate_limited" }, 429);
+    await env.TRIAL_KV.put(ipKey, String(count + 1), { expirationTtl: 3600 });
   }
+  const previous = await findTrial(env, c.email, `${c.dial}${c.phone}`).catch(() => null);
 
   let line;
   try {
@@ -174,6 +178,8 @@ export async function onRequestPost({ request, env }) {
     }
   }
 
+  // A repeat trial gets one reminder only: drop the one planned for the earlier trial.
+  if (previous?.reminderId && previous.reminderId !== reminderId) await cancelMail(env, previous.reminderId).catch(() => {});
   await remember(env, keys, c, line, now, expires, reminderId);
   await sendMail(env, {
     from, to: [to], reply_to: c.email,
@@ -186,5 +192,5 @@ export async function onRequestPost({ request, env }) {
 async function remember(env, keys, c, line, now, expires, reminderId) {
   if (!env.TRIAL_KV) return;
   const record = JSON.stringify({ created: now.toISOString(), expires: expires.toISOString(), username: line.username, firstName: c.firstName, reminderId });
-  await Promise.all(keys.map((k) => env.TRIAL_KV.put(k, k.startsWith("ip:") ? now.toISOString() : record, { expirationTtl: k.startsWith("ip:") ? DAY : 90 * DAY })));
+  await Promise.all(keys.map((k) => env.TRIAL_KV.put(k, record, { expirationTtl: 90 * DAY })));
 }
