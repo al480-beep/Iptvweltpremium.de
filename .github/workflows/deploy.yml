@@ -25,8 +25,10 @@ jobs:
 
       - name: Collect site files
         run: |
+          # Everything except repo tooling; Pages Functions are picked up from ./functions by wrangler.
           mkdir -p dist
-          cp -r index.html preise kostenloser-test checkout impressum.html datenschutz.html 404.html robots.txt sitemap.xml _headers assets dist/
+          rsync -a --exclude dist --exclude .git --exclude .github --exclude functions --exclude tools \
+            --exclude README.md --exclude .gitignore ./ dist/
 
       - uses: actions/setup-node@v4
         with:
