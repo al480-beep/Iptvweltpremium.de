@@ -410,7 +410,7 @@
             .catch(sendViaEmailjs)
         : fetch("/api/trial", { method: "POST", headers: { "Content-Type": "application/json" }, body: JSON.stringify(data) })
             .then(function (r) {
-              if (r.status === 409) { var e = new Error("used"); e.used = true; throw e; }
+              if (r.status === 429) { var e = new Error("busy"); e.busy = true; throw e; }
               if (!r.ok) throw new Error(r.status);
               return r.json();
             });
@@ -428,8 +428,8 @@
             deviceLabel(order.devices) + " für " + euro(order.price) + " €." : "Hallo IPTV Welt Premium, ich möchte einen kostenlosen Test.") + "\nVorname: " + data.firstName +
             "\nE-Mail: " + data.email + "\nTelefon: " + data.dial + " " + data.phone + (data.notes ? "\nNotizen: " + data.notes : "");
           var wa = '<a href="' + waLink(text) + '" target="_blank" rel="noopener">WhatsApp</a>';
-          errEl.innerHTML = err && err.used
-            ? "Für diese E-Mail-Adresse oder Telefonnummer wurde bereits ein Testzugang erstellt. Schreiben Sie uns gern per " + wa + "."
+          errEl.innerHTML = err && err.busy
+            ? "Von Ihrem Anschluss kamen gerade sehr viele Anfragen. Bitte versuchen Sie es in einer Stunde erneut oder schreiben Sie uns per " + wa + "."
             : "Das hat leider nicht geklappt. Bitte versuchen Sie es erneut oder schreiben Sie uns per " + wa + ".";
           errEl.hidden = false;
         });
