@@ -1,0 +1,57 @@
+# Cloudflare Pages redirects (301 = permanent). Pages already serves /x/ for /x and /x for /x.html,
+# so only real aliases are listed here, each pointing straight at its canonical URL (no chains).
+
+/test                     /kostenloser-test/            301
+/iptv-test                /kostenloser-test/            301
+/iptv-test/               /kostenloser-test/            301
+/testen                   /kostenloser-test/            301
+/free-trial               /kostenloser-test/            301
+/probeabo                 /kostenloser-test/            301
+/preis                    /preise/                      301
+/kosten                   /preise/                      301
+/iptv-kosten              /preise/                      301
+/iptv-preise              /preise/                      301
+/pakete                   /preise/                      301
+/kaufen                   /iptv-kaufen/                 301
+/iptv-abo                 /iptv-kaufen/                 301
+/abo                      /iptv-kaufen/                 301
+/bestellen                /preise/                      301
+/anbieter                 /iptv-anbieter/               301
+/vergleich                /iptv-anbieter-vergleich/     301
+/alternativen             /iptv-anbieter-alternativen/  301
+/geraete                  /iptv-geraete/                301
+/apps                     /iptv-apps/                   301
+/sport                    /iptv-sport/                  301
+/sky                      /iptv-sky/                    301
+/filme                    /iptv-filme-serien/           301
+/serien                   /iptv-filme-serien/           301
+/international            /iptv-international/          301
+/ratgeber-iptv            /ratgeber/                    301
+/blog                     /ratgeber/                    301
+/hilfe                    /iptv-hilfe/                  301
+/support                  /iptv-hilfe/                  301
+/anleitung                /iptv-einrichten/             301
+/einrichten               /iptv-einrichten/             301
+
+/firestick                /iptv-fire-tv-stick/          301
+/fire-tv                  /iptv-fire-tv-stick/          301
+/fire-tv-stick            /iptv-fire-tv-stick/          301
+/samsung                  /iptv-samsung-tv/             301
+/lg                       /iptv-lg-tv/                  301
+/smart-tv                 /iptv-smart-tv/               301
+/mag                      /mag-box/                     301
+/apple-tv                 /iptv-apple-tv-iphone/        301
+/iphone                   /iptv-apple-tv-iphone/        301
+/android                  /iptv-android/                301
+/smarters                 /iptv-smarters-pro/           301
+/iptv-smarters            /iptv-smarters-pro/           301
+/ibo                      /ibo-player/                  301
+/ibo-player-pro           /ibo-player/                  301
+/m3u                      /m3u-playlist/                301
+/xtream                   /xtream-codes/                301
+/kodi                     /kodi-iptv/                   301
+/vlc                      /vlc-iptv/                    301
+
+# Startseiten-Varianten
+/index                    /                             301
+/home                     /                             301
