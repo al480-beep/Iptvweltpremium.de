@@ -21,7 +21,7 @@ dict(
   <li><b>Zugangsdaten erhalten.</b> Nach Zahlungseingang kommen Ihre Login-Daten (M3U-Link und Xtream-Codes-Zugang) mit einer Anleitung für Ihr Gerät, meist innerhalb von 5 bis 15 Minuten.</li>
 </ol>
 
-<h2 id="preise">Was kostet ein IPTV Abo?</h2>
+<h2 id="kosten">Was kostet ein IPTV Abo?</h2>
 <p>Die Preise gelten pro Paket als Einmalzahlung. Je länger die Laufzeit, desto günstiger der Monatspreis. Alle Kombinationen für bis zu 5 Geräte finden Sie auf der Seite <a href="/preise/">IPTV Preise</a>.</p>
 <div class="matrix"><div class="matrix-scroll"><table>
   <thead><tr><th scope="col">Laufzeit</th><th scope="col">Preis (1 Gerät)</th><th scope="col">pro Monat</th><th scope="col">Ersparnis</th></tr></thead>
