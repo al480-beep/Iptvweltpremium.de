@@ -5,14 +5,19 @@ Static German landing page for IPTV Welt Premium. Plain HTML, CSS and JavaScript
 ## Structure
 
 - `index.html` – homepage
-- `preise/index.html` – pricing page (device switch, plans, full price table, order dialog)
+- `preise/index.html` – pricing page (device switch, plans, full price table)
 - `kostenloser-test/index.html` – free trial page (first name, email, country code, phone, notes)
-- `functions/api/trial.js` – Cloudflare Pages Function behind the trial form; emails the request to `kontakt@` and a confirmation to the customer. Needs `RESEND_API_KEY` set in Cloudflare Pages (Settings → Variables and Secrets) and the domain verified at resend.com. Optional: `TRIAL_TO`, `TRIAL_FROM`, `TRIAL_WEBHOOK_URL` (to automate sending credentials)
+- `functions/api/trial.js` – Cloudflare Pages Function behind the free trial form. Creates a demo M3U line in the Trex activation panel (template "Germany") and emails the logins to the customer through Resend, with a copy to `kontakt@`. If the panel refuses (e.g. no demo tickets left) the request is emailed to `kontakt@` for manual handling.
+  - Required secrets in Cloudflare Pages (Settings → Variables and Secrets, Production): `TREX_API_KEY`, `RESEND_API_KEY`
+  - Optional: `TREX_TEMPLATE` (default `Germany`), `TREX_PACK` (fixed package id), `TREX_API_URL`, `TRIAL_TO`, `TRIAL_FROM`
+  - Recommended: a KV namespace bound as `TRIAL_KV` (Settings → Bindings) so each e-mail, phone number and IP gets only one trial
+  - The sending domain `iptvweltpremium.de` must be verified at resend.com
+- Orders from `/checkout/` are sent from the browser through EmailJS (service, template and public key in `CONFIG.emailjs` in `assets/js/main.js`). Template variables: `site_name, plan, price, device, name, from_name, from_email, email, phone, country, message, time`
 - `tools/sync_layout.py` – copies the shared header/footer from `index.html` to every page; run it after changing them (`python3 tools/sync_layout.py <new-version>` also bumps the CSS/JS `?v=`)
 - Every page uses the same two buttons: **Kostenlos testen** → `/kostenloser-test/`, **Jetzt starten** → `/preise/`
 - When `style.css` or `main.js` change, bump the `?v=` number (`python3 tools/sync_layout.py <n>`) so browsers load the new file
 - `assets/css/style.css` – all styles
-- `assets/js/main.js` – pricing calculator, price table, order dialog, sliders, banners, animations
+- `assets/js/main.js` – pricing calculator, price table, checkout, sliders, banners, animations
 - `assets/img/` – hero slideshow and highlight artwork (original, free to use)
 - `impressum.html`, `datenschutz.html` – legal pages (fill in the placeholders before going live)
 - `.github/workflows/deploy.yml` – deploys to Cloudflare Pages on every push to `main`

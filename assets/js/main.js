@@ -6,7 +6,9 @@
   var CONFIG = {
     whatsapp: "490000000",          // internationale Nummer ohne + und Leerzeichen (vorläufig)
     whatsappDisplay: "+49 000 0000", // so wird die Nummer auf der Seite angezeigt
-    email: "kontakt@iptvweltpremium.de"
+    email: "kontakt@iptvweltpremium.de",
+    // Bestellungen gehen über EmailJS an kontakt@ (der öffentliche Schlüssel darf im Browser stehen)
+    emailjs: { service: "service_8qunnth", template: "template_kir731r", publicKey: "R6r0yfArKg9oG_O0g" }
   };
 
   // ---- Kundenstimmen ----
@@ -374,8 +376,39 @@
       showError("");
       var btn = trialForm.querySelector("button[type=submit]");
       btn.disabled = true;
-      fetch(trialForm.dataset.endpoint || "/api/trial", { method: "POST", headers: { "Content-Type": "application/json" }, body: JSON.stringify(data) })
-        .then(function (r) { if (!r.ok) throw new Error(r.status); return r.json(); })
+      var countryName = regionName(data.country);
+      var request = order
+        ? fetch("https://api.emailjs.com/api/v1.0/email/send", {
+            method: "POST",
+            headers: { "Content-Type": "application/json" },
+            body: JSON.stringify({
+              service_id: CONFIG.emailjs.service,
+              template_id: CONFIG.emailjs.template,
+              user_id: CONFIG.emailjs.publicKey,
+              template_params: {
+                site_name: "IPTV Welt Premium",
+                plan: DURATION_LABEL[order.months] + ", " + deviceLabel(order.devices) + " – " + euro(order.price) + " €" +
+                  (order.months === 12 ? " (inkl. IBO Player Pro Premium Abo)" : ""),
+                price: euro(order.price) + " €",
+                device: deviceLabel(order.devices),
+                name: data.firstName,
+                from_name: data.firstName,
+                from_email: data.email,
+                email: data.email,
+                phone: data.dial + " " + data.phone,
+                country: countryName + " (" + data.country + ")",
+                message: data.notes || "–",
+                time: new Date().toLocaleString("de-DE")
+              }
+            })
+          }).then(function (r) { if (!r.ok) throw new Error(r.status); return {}; })
+        : fetch("/api/trial", { method: "POST", headers: { "Content-Type": "application/json" }, body: JSON.stringify(data) })
+            .then(function (r) {
+              if (r.status === 409) { var e = new Error("used"); e.used = true; throw e; }
+              if (!r.ok) throw new Error(r.status);
+              return r.json();
+            });
+      request
         .then(function () {
           trialForm.hidden = true;
           success.querySelector("[data-success-email]").textContent = data.email;
@@ -383,13 +416,15 @@
           success.focus();
           window.scrollTo({ top: 0 });
         })
-        .catch(function () {
+        .catch(function (err) {
           btn.disabled = false;
           var text = (order ? "Hallo IPTV Welt Premium, ich möchte bestellen: " + DURATION_LABEL[order.months] + ", " +
             deviceLabel(order.devices) + " für " + euro(order.price) + " €." : "Hallo IPTV Welt Premium, ich möchte einen kostenlosen Test.") + "\nVorname: " + data.firstName +
             "\nE-Mail: " + data.email + "\nTelefon: " + data.dial + " " + data.phone + (data.notes ? "\nNotizen: " + data.notes : "");
-          errEl.innerHTML = "Das hat leider nicht geklappt. Bitte versuchen Sie es erneut oder fordern Sie Ihren Test per " +
-            '<a href="' + waLink(text) + '" target="_blank" rel="noopener">WhatsApp</a> an.';
+          var wa = '<a href="' + waLink(text) + '" target="_blank" rel="noopener">WhatsApp</a>';
+          errEl.innerHTML = err && err.used
+            ? "Für diese E-Mail-Adresse oder Telefonnummer wurde bereits ein Testzugang erstellt. Schreiben Sie uns gern per " + wa + "."
+            : "Das hat leider nicht geklappt. Bitte versuchen Sie es erneut oder schreiben Sie uns per " + wa + ".";
           errEl.hidden = false;
         });
     });
