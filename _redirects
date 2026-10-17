@@ -67,3 +67,14 @@
 /live-tv                  /iptv-stream/                 301
 /georgien                 /iptv-georgien/               301
 /iptv-georgisch           /iptv-georgien/               301
+
+# Weitere Aliase (Audit-Runde 3)
+/iptv                     /                             301
+/iptv-forum               /ratgeber/                    301
+/forum                    /ratgeber/                    301
+/playlist                 /m3u-playlist/                301
+/iptv-playlist            /m3u-playlist/                301
+/receiver                 /iptv-receiver/               301
+/box                      /iptv-box/                    301
+/iptv-app                 /iptv-apps/                   301
+/iptv-4k-premium          /iptv-4k/                     301

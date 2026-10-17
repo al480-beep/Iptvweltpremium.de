@@ -13,7 +13,7 @@ SEO = pathlib.Path(__file__).resolve().parent
 SITE = "https://iptvweltpremium.de"
 BRAND = "IPTV Welt Premium"
 UPDATED = "2026-10-17"          # change only when the content really changes
-CSS_V = "13"
+CSS_V = "14"
 OG_IMAGE = f"{SITE}/assets/img/og-image.jpg"
 
 # Pages that already exist outside the generator (for breadcrumbs and related links)
@@ -60,7 +60,7 @@ def load_pages():
                     p["body"] = p["body"][:end].rstrip() + "\n" + add.strip() + "\n\n" + p["body"][end:]
             p["body"] += e.get("body", "")
             p["faq"] = list(p.get("faq", [])) + e.get("faq", [])
-            for k in ("related", "title", "desc", "app", "about"):
+            for k in ("related", "title", "desc", "app", "about", "lead", "answer", "h1"):
                 if k in e:
                     p[k] = e[k]
     return pages
@@ -221,6 +221,19 @@ def render(page, pages, master, plans_block):
       <div class="faq reveal d1">{faq_html}</div>
     </div>
   </section>'''
+    trust = '''
+  <section class="guarantee-wrap" aria-label="Zufriedenheitsgarantie">
+    <div class="container">
+      <div class="guarantee reveal">
+        <div class="guarantee-icon"><svg><use href="#i-shield"/></svg></div>
+        <div>
+          <h2>Zufriedenheitsgarantie: erst testen, dann zahlen</h2>
+          <p>24 Stunden kostenlos testen, ohne Zahlungsdaten und ohne Vertrag. Einmalzahlung inkl. MwSt., keine automatische Verlängerung, Aktivierung in der Regel 5 bis 15 Minuten nach Zahlungseingang. Bei Fragen hilft der 24/7 Support per WhatsApp und E-Mail.</p>
+        </div>
+        <a href="/kostenloser-test/" class="btn btn-ghost">Kostenlos testen</a>
+      </div>
+    </div>
+  </section>'''
     answer = f'<div class="answer-box"><b>Kurz gesagt</b><p>{page["answer"]}</p></div>' if page.get("answer") else ""
     date_de = ".".join(reversed(UPDATED.split("-")))
     og_type = "website" if kind in ("CollectionPage", "WebPage") else "article"
@@ -233,6 +246,8 @@ def render(page, pages, master, plans_block):
 <title>{e(title)}</title>
 <meta name="description" content="{e(desc)}">
 <link rel="canonical" href="{url(slug)}">
+<link rel="alternate" hreflang="de" href="{url(slug)}">
+<link rel="alternate" hreflang="x-default" href="{url(slug)}">
 <meta name="robots" content="index, follow, max-image-preview:large, max-snippet:-1">
 <meta name="theme-color" content="#07070d">
 <meta property="og:type" content="{og_type}">
@@ -253,7 +268,8 @@ def render(page, pages, master, plans_block):
 <link rel="apple-touch-icon" href="/assets/img/logo-560.png">
 <link rel="preconnect" href="https://fonts.googleapis.com">
 <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
-<link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700&family=Sora:wght@600;700;800&display=swap" rel="stylesheet">
+<link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700&family=Sora:wght@600;700;800&display=swap" rel="stylesheet" media="print" onload="this.media='all'">
+<noscript><link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700&family=Sora:wght@600;700;800&display=swap" rel="stylesheet"></noscript>
 <link rel="stylesheet" href="/assets/css/style.css?v={CSS_V}">
 <script type="application/ld+json">
 {ld}
@@ -288,7 +304,7 @@ def render(page, pages, master, plans_block):
       </div>
     </div>
   </section>
-{plans}{faq_sec}{related_html}
+{plans}{faq_sec}{trust}{related_html}
   <section class="cta-band-wrap">
     <div class="container">
       <div class="cta-box reveal">
