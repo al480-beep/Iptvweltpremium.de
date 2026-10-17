@@ -321,7 +321,7 @@ section { padding: 110px 0; position: relative; }
 .footer { border-top: 1px solid var(--line); padding: 60px 0 40px; margin-top: 40px; }
 .footer-grid { display: grid; grid-template-columns: 1.6fr 1fr 1fr 1fr; gap: 40px; }
 .footer p { color: var(--text-3); font-size: 0.92rem; margin-top: 14px; max-width: 320px; }
-.footer h4 { font-size: 0.85rem; text-transform: uppercase; letter-spacing: 0.12em; color: var(--text-3); margin-bottom: 16px; }
+.footer h4, .footer .footer-title { font-weight: 700; margin-top: 0; max-width: none; font-size: 0.85rem; text-transform: uppercase; letter-spacing: 0.12em; color: var(--text-3); margin-bottom: 16px; }
 .footer ul { list-style: none; display: grid; gap: 10px; }
 .footer ul a { color: var(--text-2); font-size: 0.94rem; transition: color 0.2s; }
 .footer ul a:hover { color: var(--gold); }
@@ -392,7 +392,7 @@ section { padding: 110px 0; position: relative; }
 .guarantee { display: flex; align-items: center; gap: 24px; padding: 26px 30px; border-radius: var(--radius); border: 1px solid rgba(52,211,153,.3); background: linear-gradient(120deg, rgba(52,211,153,.10), rgba(34,211,238,.06)); }
 .guarantee-icon { flex: none; width: 58px; height: 58px; border-radius: 18px; display: grid; place-items: center; background: rgba(52,211,153,.15); border: 1px solid rgba(52,211,153,.35); }
 .guarantee-icon svg { width: 28px; height: 28px; color: var(--green); }
-.guarantee h3 { font-family: "Sora", sans-serif; font-size: 1.15rem; color: var(--green); margin-bottom: 4px; }
+.guarantee h2 { font-family: "Sora", sans-serif; font-size: 1.15rem; color: var(--green); margin-bottom: 4px; }
 .guarantee p { color: var(--text-2); font-size: .95rem; }
 .guarantee .btn { flex: none; margin-left: auto; }
 
@@ -433,7 +433,7 @@ section { padding: 110px 0; position: relative; }
 /* Price matrix */
 .matrix { margin-top: 70px; border-radius: var(--radius); border: 1px solid var(--line); background: var(--surface); overflow: hidden; }
 .matrix-head { padding: 26px 28px 8px; }
-.matrix-head h3 { font-family: "Sora", sans-serif; font-size: 1.3rem; }
+.matrix-head h2 { font-family: "Sora", sans-serif; font-size: 1.3rem; }
 .matrix-head p { color: var(--text-3); font-size: .9rem; }
 .matrix-scroll { overflow-x: auto; padding: 10px 14px 0; }
 .matrix table { width: 100%; border-collapse: collapse; min-width: 620px; font-size: .95rem; }
