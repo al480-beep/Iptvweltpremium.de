@@ -12,7 +12,7 @@ Static German landing page for IPTV Welt Premium. Plain HTML, CSS and JavaScript
   - Optional: `TREX_SERVER`, `TREX_TEMPLATE` (default `Germany`), `TREX_PACK` (fixed package id), `TREX_API_URL`, `TRIAL_HOURS`, `REMINDER_HOURS`, `TRIAL_TO`, `TRIAL_FROM`
   - Recommended: a KV namespace bound as `TRIAL_KV` (Settings → Bindings) so orders can show the customer's latest trial and cancel its reminder, a repeat trial replaces the old reminder, and one IP is limited to `TRIAL_IP_LIMIT` trials per hour (default 5). Customers can request as many trials as they like.
   - The sending domain `iptvweltpremium.de` must be verified at resend.com
-- `functions/api/order.js` – orders from `/checkout/`, emailed to `kontakt@` through Resend with the first line `Automation / iptvweltpremium.de / Trial <username> (or "kein Trial") / name / email / phone`. Cancels the customer's pending trial reminder.
+- `functions/api/order.js` – orders from `/checkout/`, emailed to `kontakt@` through Resend with the subject `Sale / iptvweltpremium.de / <plan, price> / name / email / phone`; the body also shows the customer's earlier trial. Cancels the customer's pending trial reminder.
 - `functions/api/_emails.js` – the HTML e-mail templates and the price list used in the reminder (keep it in step with `PRICES` in `main.js`)
 - If `/api/order` fails, the browser falls back to EmailJS (service, template and public key in `CONFIG.emailjs` in `assets/js/main.js`). Template variables: `site_name, plan, price, device, name, from_name, from_email, email, phone, country, message, time`
 - `tools/sync_layout.py` – copies the shared header/footer from `index.html` to every page; run it after changing them (`python3 tools/sync_layout.py <new-version>` also bumps the CSS/JS `?v=`)
