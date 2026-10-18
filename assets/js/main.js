@@ -4,8 +4,8 @@
 
   // ---- Kontakt-Einstellungen: hier anpassen ----
   var CONFIG = {
-    whatsapp: "490000000",          // internationale Nummer ohne + und Leerzeichen (vorläufig)
-    whatsappDisplay: "+49 000 0000", // so wird die Nummer auf der Seite angezeigt
+    whatsapp: "49111111",          // internationale Nummer ohne + und Leerzeichen (vorläufig)
+    whatsappDisplay: "+49 111111", // so wird die Nummer auf der Seite angezeigt
     email: "kontakt@iptvweltpremium.de",
     // Ersatzweg für Bestellungen, falls /api/order ausfällt (der öffentliche Schlüssel darf im Browser stehen)
     emailjs: { service: "service_8qunnth", template: "template_kir731r", publicKey: "R6r0yfArKg9oG_O0g" }
