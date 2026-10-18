@@ -7,11 +7,16 @@ from geo_cities_1 import CITIES as C1
 from geo_cities_2 import CITIES as C2
 from geo_cities_3 import CITIES as C3
 from geo_cities_4 import CITIES as C4
+from geo_cities_5 import CITIES as C5, WOHNEN as W5, ALLTAG as A5
+from geo_cities_6 import CITIES as C6, WOHNEN as W6, ALLTAG as A6
+from geo_cities_7 import CITIES as C7, WOHNEN as W7, ALLTAG as A7
 from geo_states import STATES
 from geo_wohnen import WOHNEN
 from geo_alltag import ALLTAG
 
-CITIES = C1 + C2 + C3 + C4
+CITIES = C1 + C2 + C3 + C4 + C5 + C6 + C7
+WOHNEN = {**WOHNEN, **W5, **W6, **W7}
+ALLTAG = {**ALLTAG, **A5, **A6, **A7}
 CITY = {c["slug"]: c for c in CITIES}
 STATE = {s["slug"]: s for s in STATES}
 HUB = "iptv-staedte"
