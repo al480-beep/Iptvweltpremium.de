@@ -78,3 +78,14 @@
 /box                      /iptv-box/                    301
 /iptv-app                 /iptv-apps/                   301
 /iptv-4k-premium          /iptv-4k/                     301
+
+# Städte und Regionen
+/staedte                  /iptv-staedte/                301
+/regionen                 /iptv-staedte/                301
+/iptv-regionen            /iptv-staedte/                301
+/iptv-nrw                 /iptv-nordrhein-westfalen/    301
+/iptv-bw                  /iptv-baden-wuerttemberg/     301
+/iptv-mv                  /iptv-mecklenburg-vorpommern/ 301
+/iptv-frankfurt-am-main   /iptv-frankfurt/              301
+/iptv-freiburg-im-breisgau /iptv-freiburg/              301
+/iptv-halle-saale         /iptv-halle/                  301
