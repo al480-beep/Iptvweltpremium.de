@@ -184,7 +184,7 @@ PAGES = [
           ("Welcher Player ist am besten für Anfänger?", "IPTV Smarters Pro, weil die Oberfläche übersichtlich ist und die Anleitung auf allen Geräten ähnlich bleibt."),
           ("Ist die Reihenfolge eine bezahlte Platzierung?", "Nein. Wir erhalten keine Provision von App-Anbietern, die Einschätzung beschreibt Geräte und Einsatzzweck.")],
          ["iptv-apps", "tivimate-vs-iptv-smarters-pro", "kodi-vs-vlc-iptv", "iptv-geraete", "kostenloser-test"],
-         ["bester iptv player", "beste iptv app", "iptv player vergleich", "beste iptv apps", "bester iptv player für fire tv stick kostenlos deutsch"],
+         ["bester iptv player", "beste iptv app", "iptv player vergleich", "beste iptv apps"],
          "Die besten IPTV Player nach Gerät: Fire TV, Android TV, Samsung, LG, Apple und PC.",
          priority="0.8"),
 
@@ -196,7 +196,7 @@ PAGES = [
          "Satellitenfernsehen liefert Free-TV-Sender kostenlos über die Schüssel und funktioniert ohne Internet. IPTV nutzt Ihre Internetleitung, braucht keine Montage und erlaubt Sender, Filme und Archiv auf mehreren Geräten. Für Mietwohnungen ohne Schüssel ist IPTV oft die einzige praktische Lösung.",
          [("tabelle", "Satellit und IPTV im Überblick",
            table(["Kriterium", "Satellit", "IPTV"], [
-               ["Voraussetzung", "Schüssel, Receiver, freie Sicht", "Internetanschluss ab ca. 25 Mbit/s"],
+               ["Voraussetzung", "Schüssel, Receiver, freie Sicht", "Internetanschluss mit mindestens 16 Mbit/s"],
                ["Installation", "Montage, Kabel", "App installieren, anmelden"],
                ["Umzug", "neu ausrichten oder neu montieren", "Zugang nimmt man mit"],
                ["Mehrere Räume", "Verteilung oder weitere Receiver", "weitere Geräte mit App"],
@@ -236,7 +236,7 @@ PAGES = [
           ],
          [("Kann ich meinen Kabelanschluss kündigen?", "Das hängt von Ihrem Vertrag und Ihrer Wohnsituation ab. Fragen Sie Vermieter oder Anbieter und prüfen Sie Ihre Nebenkostenabrechnung."),
           ("Brauche ich für IPTV einen Kabelanschluss?", "Nein, es genügt ein Internetanschluss."),
-          ("Wie viel Internet-Geschwindigkeit ist nötig?", "Für HD reichen etwa 10 bis 15 Mbit/s je Stream, für 4K etwa 25 Mbit/s. Mehr Details unter IPTV 4K.")],
+          ("Wie viel Internet-Geschwindigkeit ist nötig?", "Für HD rechnen wir mit mindestens 16 Mbit/s je Stream, für 4K mit etwa 30 Mbit/s. Mehr Details unter IPTV 4K.")],
          ["iptv-vs-satellit", "iptv-telekom-vodafone", "was-ist-iptv", "iptv-4k", "kostenloser-test"],
          ["iptv oder kabel", "iptv statt kabel", "kabelfernsehen kündigen iptv", "kabel tv ersetzen"],
          "IPTV oder Kabel-TV: Kosten, Vertrag und Technik im Vergleich."),

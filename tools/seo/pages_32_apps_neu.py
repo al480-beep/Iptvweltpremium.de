@@ -148,7 +148,7 @@ PAGES = [
 
     app("sparkle-tv", "Sparkle TV", "Sparkle TV", "Android TV, Fire OS",
         "Sparkle TV einrichten: Player für Fire TV & Android",
-        "Sparkle TV auf Fire TV und Android TV: Playlist hinzufügen, EPG laden und Favoriten anlegen. Kurzanleitung mit Tipps.",
+        "Sparkle TV auf Fire TV und Android TV einrichten: Playlist hinzufügen, EPG laden und Favoriten anlegen. Kurzanleitung mit praktischen Tipps.",
         'Sparkle TV: <span class="grad-text">Live-TV Player für Fernseher</span>', "App-Anleitung",
         "Sparkle TV ist ein Player für Fernseher-Boxen mit Fokus auf Live-TV.",
         "Sparkle TV liest M3U-Playlists und Xtream-Zugänge ein, zeigt ein Programmraster und erlaubt Favoritenlisten. Die Einrichtung erfolgt in den Einstellungen unter Playlists. Prüfen Sie vor der Installation die Verfügbarkeit im Store Ihres Geräts.",

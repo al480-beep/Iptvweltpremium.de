@@ -12,7 +12,7 @@ ROOT = pathlib.Path(__file__).resolve().parents[2]
 SEO = pathlib.Path(__file__).resolve().parent
 SITE = "https://iptvweltpremium.de"
 BRAND = "IPTV Welt Premium"
-UPDATED = "2026-10-17"          # change only when the content really changes
+UPDATED = "2026-10-18"          # change only when the content really changes
 CSS_V = "14"
 OG_IMAGE = f"{SITE}/assets/img/og-image.jpg"
 

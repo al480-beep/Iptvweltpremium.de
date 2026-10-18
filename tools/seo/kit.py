@@ -13,8 +13,18 @@ def tip(t):
     return f'<div class="tip"><p><strong>Tipp:</strong> {t}</p></div>'
 
 
+def _norm(t):
+    import html, re
+    t = html.unescape(re.sub(r"<[^>]+>", " ", t)).lower().replace("-", " ")
+    for a, b in (("ä", "ae"), ("ö", "oe"), ("ü", "ue"), ("ß", "ss")):
+        t = t.replace(a, b)
+    return re.sub(r"\s+", " ", t)
+
+
 def page(slug, parent, nav, title, desc, h1, eyebrow, lead, answer, secs, faq, related, kw, card, priority="0.7", app=None, about=None, cta=None):
     body = "\n\n".join(f'<h2 id="{i}">{h}</h2>\n{t}' for i, h, t in secs)
+    text = _norm(" ".join([title, h1, lead, answer, body] + [q + " " + a for q, a in faq]))
+    kw = [k for k in kw if _norm(k) in text]  # nur Suchbegriffe, die wirklich auf der Seite stehen
     d = dict(slug=slug, parent=parent, nav=nav, priority=priority, card=card, kw=kw, title=title, desc=desc, eyebrow=eyebrow,
              h1=h1, lead=lead, answer=answer, body="\n" + body + "\n", faq=faq, related=related)
     if app:

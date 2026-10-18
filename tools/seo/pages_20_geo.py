@@ -63,6 +63,23 @@ STEPS = '''<ol>
 </ol>'''
 
 
+def region_block(c):
+    """Links to other cities of the same Bundesland (cyclic, so every city receives the same number of links)."""
+    if not c["state"]:
+        return ""
+    mates = [x for x in CITIES if x["state"] == c["state"]]
+    i = mates.index(c)
+    n = len(mates)
+    offsets = list(range(1, n)) if n <= 6 else [k for k in (1, 3, 7, 12, 18) if k < n]
+    others = [mates[(i + k) % n] for k in offsets]
+    if not others:
+        return ""
+    st = STATE[c["state"]]
+    links = ", ".join(f'<a href="/{pid(x["slug"])}/">IPTV {esc(short(x["name"]))}</a>' for x in others)
+    return (f'<h2 id="region">Weitere Orte in {esc(st["name"])}</h2>\n'
+            f'<p>{links}. Übersicht: <a href="/{pid(st["slug"])}/">IPTV in {esc(st["name"])}</a>.</p>\n')
+
+
 def city_page(c):
     n, s = c["name"], short(c["name"])
     st = STATE.get(c["state"]) if c["state"] else None
@@ -88,6 +105,7 @@ def city_page(c):
 <h2 id="alltag">Termine und Alltag in {esc(n)}: was das für IPTV bedeutet</h2>
 <p>{linkify(ALLTAG[c["slug"]], used)}</p>
 
+{region_block(c)}
 <h2 id="schritte">IPTV in {esc(n)} starten: 4 Schritte</h2>
 {STEPS}
 '''
@@ -99,11 +117,11 @@ def city_page(c):
     return dict(
         slug=pid(c["slug"]), parent=parent, nav=f"IPTV {s}", priority="0.6",
         card=f"IPTV in {n}: {c['tag']}.",
-        kw=[f"iptv {s.lower()}", f"iptv {s.lower()} kaufen", f"iptv anbieter {s.lower()}"],
+        kw=[f"iptv {s.lower()}"],
         title=title, desc=desc, eyebrow=f"IPTV in {esc(region)}",
-        h1=f'IPTV in {esc(n)}: <span class="grad-text">Live-TV, Sport und Heimat</span>',
+        h1=f'IPTV {esc(n)}: <span class="grad-text">Live-TV, Sport und Heimat</span>',
         lead=esc(c["lead"]),
-        answer=(f"IPTV Welt Premium läuft in {esc(n)} über Ihren vorhandenen Internetanschluss, ohne Satellitenschüssel und ohne Kabelvertrag, "
+        answer=(f"IPTV {esc(n)} läuft mit IPTV Welt Premium über Ihren vorhandenen Internetanschluss, ohne Satellitenschüssel und ohne Kabelvertrag, "
                 f"auf bis zu 5 Geräten gleichzeitig. Besonders gefragt: {esc(c['tag'])}. Ab 4,08 € im Monat im Jahresabo, vorher 24 Stunden kostenlos testen."),
         about=[n], body=body, faq=faq, related=related,
         cta=f"Prüfen Sie in {esc(n)} Bildqualität, Senderauswahl und Stabilität kostenlos auf Ihrem eigenen Gerät.",
@@ -145,8 +163,8 @@ def state_page(st):
         slug=pid(st["slug"]), parent=HUB, nav=f"IPTV {n}", priority="0.7",
         card=f"IPTV in {n}: {st['tag']}.",
         kw=[f"iptv {n.lower()}", f"iptv {st['slug'].replace('-', ' ')}"] if st["slug"] != n.lower() else [f"iptv {n.lower()}"],
-        title=f"IPTV {n}: {st['tag']}", desc=f"IPTV in {n}: Fernsehen per Internet mit regionalen Sendern, Sport und Heimatsendern. Tipps zu Anschluss und Städten. 24 Stunden gratis testen.",
-        eyebrow="Bundesland", h1=f'IPTV in {esc(n)}: <span class="grad-text">Fernsehen per Internet</span>',
+        title=f"IPTV {n}: {st['tag']}", desc=f"IPTV in {n}: Fernsehen per Internet mit regionalen Sendern, Sport und Heimatsendern. Tipps zu Anschluss und Städten. 24 Std. gratis testen.",
+        eyebrow="Bundesland", h1=f'IPTV {esc(n)}: <span class="grad-text">Fernsehen per Internet</span>',
         lead=esc(st["lead"]),
         answer=(f"IPTV Welt Premium läuft überall in {esc(n)}, wo ein stabiler Internetanschluss liegt, auf Smart-TV, Stick, Box, Handy und PC. "
                 f"Besonders gefragt: {esc(st['tag'])}. Ab 4,08 € im Monat im Jahresabo, vorher 24 Stunden kostenlos testen."),
@@ -180,6 +198,7 @@ def hub_page():
   <li><strong>Geräte:</strong> Smart-TV, Stick, Box, Handy oder PC, siehe <a href="/iptv-geraete/">IPTV Geräte</a>.</li>
   <li><strong>Heimatsender:</strong> Ländergruppen für Balkan, Albanien, Rumänien, Georgien und mehr unter <a href="/iptv-international/">IPTV International</a>.</li>
   <li><strong>Probleme:</strong> Lösungen für Ruckeln und Login-Fehler in der <a href="/iptv-hilfe/">IPTV Hilfe</a>.</li>
+  <li><strong>Suchbegriffe:</strong> Ob Sie „IPTV Städte“, „IPTV Regionen“, „IPTV Bundesländer“ oder „IPTV in meiner Stadt“ eingeben: Alle Seiten führen zum selben Angebot, nur die Hinweise vor Ort unterscheiden sich.</li>
 </ul>
 '''
     faq = [("Ist IPTV Welt Premium in jeder Stadt verfügbar?", "Ja, überall dort, wo Sie einen stabilen Internetanschluss haben. Das Angebot kommt über das Internet, nicht über Kabel oder Satellit."),
@@ -191,7 +210,7 @@ def hub_page():
         card="IPTV für Ihre Stadt und Ihr Bundesland: lokale Sender, Sport und Anschlusstipps.",
         kw=["iptv städte", "iptv regionen", "iptv bundesländer", "iptv in meiner stadt"],
         title="IPTV in Deutschland: Städte, Regionen und Bundesländer",
-        desc="IPTV für Ihre Stadt: regionale Sender, Sport vor Ort, Anschluss und Geräte für über 50 Städte und alle Bundesländer. Jetzt 24 Stunden gratis testen.",
+        desc=f"IPTV für Ihre Stadt: regionale Sender, Sport vor Ort, Anschluss und Geräte für {len(CITIES)} Städte und alle Bundesländer. 24 Stunden gratis testen.",
         eyebrow="Städte & Regionen", h1='IPTV in Deutschland: <span class="grad-text">Ihre Stadt, Ihr Bundesland</span>',
         lead="Ein Abo für ganz Deutschland, mit den Besonderheiten Ihrer Region: Hier finden Sie Seiten für Bundesländer und Städte mit lokalen Hinweisen zu Fernsehen, Sport und Internet.",
         answer="IPTV Welt Premium funktioniert in ganz Deutschland über jeden stabilen Internetanschluss. Auf den Seiten für Städte und Bundesländer finden Sie regionale Programme, den Sport vor Ort und Tipps zu Anschluss und Geräten.",

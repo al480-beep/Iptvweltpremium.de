@@ -111,7 +111,7 @@ dict(slug="potsdam", name="Potsdam", state="brandenburg", pop="rund 185.000",
            ("Läuft IPTV im Denkmalschutzhaus?", "Ja, bei Funkproblemen mit LAN-Kabel.")]),
 
 dict(slug="oldenburg", name="Oldenburg", state="niedersachsen", pop="rund 170.000",
-     tag="NDR, EWE Baskets und Weser-Ems", nearby=["bremen", "hannover", "osnabrueck"],
+     tag="NDR, EWE Baskets und Weser-Ems", nearby=["bremen", "bremerhaven", "osnabrueck"],
      lead="Oldenburg ist das Oberzentrum der Region Weser-Ems, Universitätsstadt mit vielen Radfahrern und Sitz des Energieversorgers EWE.",
      tv="Der NDR Niedersachsen berichtet aus Oldenburg und dem Nordwesten. Die Region hat viele ländliche Gebiete, in denen schnelles Internet unterschiedlich ausgebaut ist.",
      sport="Die EWE Baskets Oldenburg spielen Basketball in der Bundesliga, der VfB Oldenburg ist der Fußballverein der Stadt.",

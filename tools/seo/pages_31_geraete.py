@@ -140,7 +140,7 @@ PAGES = [
 
     page("iptv-panasonic-tv", G, "IPTV auf Panasonic Fernsehern",
          "IPTV auf Panasonic-Fernseher einrichten",
-         "IPTV auf Panasonic-Fernsehern: My Home Screen, Fire TV Edition oder Android TV? So gehen Sie je nach Modell vor.",
+         "IPTV auf Panasonic-Fernsehern: My Home Screen, Fire TV Edition oder Android TV? So richten Sie IPTV je nach Modell und System ein.",
          'IPTV auf Panasonic: <span class="grad-text">je nach Modell unterschiedlich</span>', "Panasonic",
          "Panasonic nutzt verschiedene Systeme. Bei der Fire TV Edition ist die Einrichtung am einfachsten.",
          "Bei Panasonic-Modellen mit Fire TV oder Android TV installieren Sie IPTV-Apps direkt. Bei Modellen mit „My Home Screen“ ist das App-Angebot begrenzt, hier hilft ein Stick am HDMI-Port.",
