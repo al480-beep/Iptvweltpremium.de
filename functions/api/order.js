@@ -1,7 +1,7 @@
 // Cloudflare Pages Function: POST /api/order – order from /checkout/, emailed to kontakt@ through Resend.
 //
-// The mail starts with "Automation / iptvweltpremium.de / <trial> / name / email / phone", where <trial>
-// is the username of the free trial this customer got earlier (looked up in TRIAL_KV) or "kein Trial".
+// The subject reads "Sale / iptvweltpremium.de / <plan, price> / name / email / phone", so orders stand apart
+// from trial mails. The body also shows the free trial this customer got earlier (looked up in TRIAL_KV).
 // A pending trial reminder for the same customer is cancelled, so buyers do not get it.
 // Uses RESEND_API_KEY, TRIAL_TO, TRIAL_FROM and the TRIAL_KV binding, like trial.js.
 import { readContact, json, sendMail, cancelMail, mailFrom, mailTo, findTrial } from "./_shared.js";
@@ -19,8 +19,7 @@ export async function onRequestPost({ request, env }) {
 
   const phone = `${c.dial}${c.phone}`;
   const trial = await findTrial(env, c.email, phone).catch((err) => (console.error(err), null));
-  const trialLabel = trial ? `Trial ${trial.username || "(Datum " + String(trial.created).slice(0, 10) + ")"}` : "kein Trial";
-  const headline = `Automation / iptvweltpremium.de / ${trialLabel} / ${c.firstName} / ${c.email} / ${phone}`;
+  const headline = `Sale / iptvweltpremium.de / ${DURATION_LABEL[months]}, ${deviceLabel(devices)}, ${price} € / ${c.firstName} / ${c.email} / ${phone}`;
   const plan = `${DURATION_LABEL[months]}, ${deviceLabel(devices)} – ${price} €${months === 12 ? " (inkl. IBO Player Pro Premium Abo)" : ""}`;
 
   let reminder = "";
