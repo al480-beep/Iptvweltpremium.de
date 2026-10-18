@@ -140,7 +140,7 @@ PAGES = [
 
     page("iptv-panasonic-tv", G, "IPTV auf Panasonic Fernsehern",
          "IPTV auf Panasonic-Fernseher einrichten",
-         "IPTV auf Panasonic-Fernsehern: My Home Screen, Fire TV Edition oder Android TV? So gehen Sie je nach Modell vor.",
+         "IPTV auf Panasonic-Fernsehern: My Home Screen, Fire TV Edition oder Android TV? So richten Sie IPTV je nach Modell und System ein.",
          'IPTV auf Panasonic: <span class="grad-text">je nach Modell unterschiedlich</span>', "Panasonic",
          "Panasonic nutzt verschiedene Systeme. Bei der Fire TV Edition ist die Einrichtung am einfachsten.",
          "Bei Panasonic-Modellen mit Fire TV oder Android TV installieren Sie IPTV-Apps direkt. Bei Modellen mit „My Home Screen“ ist das App-Angebot begrenzt, hier hilft ein Stick am HDMI-Port.",
@@ -307,7 +307,7 @@ PAGES = [
                ["Kodi", "Mediencenter mit EPG"],
            ])),
           ("installation", "Installation",
-           "<pre><code>sudo apt install vlc mpv kodi      # Ubuntu, Debian\nsudo dnf install vlc mpv kodi      # Fedora</code></pre><p>Danach starten Sie VLC, wählen „Netzwerkstream öffnen“ und fügen den M3U-Link ein. Bei mpv genügt <code>mpv &lt;M3U-Link&gt;</code>.</p>"),
+           "<p>Ubuntu und Debian: <code>sudo apt install vlc mpv kodi</code></p><p>Fedora: <code>sudo dnf install vlc mpv kodi</code></p><p>Danach starten Sie VLC, wählen „Netzwerkstream öffnen“ und fügen den M3U-Link ein. Bei mpv genügt <code>mpv &lt;M3U-Link&gt;</code>.</p>"),
           ("hinweise", "Hinweise für den Dauerbetrieb",
            "<ul><li><strong>Hardware-Beschleunigung:</strong> in VLC unter Eingabe/Codecs aktivieren.</li><li><strong>EPG:</strong> in Kodi die XMLTV-Adresse im Add-on hinterlegen, siehe <a href=\"/kodi-iptv/\">Kodi IPTV</a>.</li><li><strong>Firewall:</strong> ausgehende Verbindungen nicht blockieren.</li></ul>"),
           ],

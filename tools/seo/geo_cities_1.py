@@ -23,7 +23,7 @@ dict(slug="hamburg", name="Hamburg", state=None, region="Hamburg und Norddeutsch
            ("Funktioniert IPTV in Hamburger Wohnungen mit mehreren Haushalten im Haus?", "Ja. Bei gemeinsam genutzten Anschlüssen hilft ein LAN-Kabel, abends kann Full HD stabiler laufen als 4K.")]),
 
 dict(slug="bremen", name="Bremen", state=None, region="Bremen und Niedersachsen", pop="rund 570.000",
-     tag="Werder, buten un binnen, Weser", nearby=["hamburg", "oldenburg", "niedersachsen"],
+     tag="Werder, buten un binnen, Weser", nearby=["bremerhaven", "oldenburg", "hamburg", "niedersachsen"],
      lead="Bremen ist Stadtstaat und Hansestadt an der Weser, mit rund 570.000 Einwohnern; zum Land Bremen gehört auch Bremerhaven.",
      tv="Radio Bremen betreibt das regionale Fernsehen, Das Magazin buten un binnen berichtet täglich aus Bremen und Bremerhaven. Als Stadt mit Hafen, Universität und Industrie hat Bremen viele Zugezogene, die ihr Heimatprogramm auch hier schauen möchten.",
      sport="Werder Bremen ist der prägende Fußballverein der Stadt, das Weserstadion gilt als Wahrzeichen. Außerdem finden hier Radrennen und im Winter Hallensport statt. Wer ein Heimspiel nicht im Stadion sieht, braucht zur Anstoßzeit einen stabilen Stream.",
