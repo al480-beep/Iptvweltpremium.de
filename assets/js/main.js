@@ -4,8 +4,10 @@
 
   // ---- Kontakt-Einstellungen: hier anpassen ----
   var CONFIG = {
-    whatsapp: "49111111",          // internationale Nummer ohne + und Leerzeichen (vorläufig)
-    whatsappDisplay: "+49 111111", // so wird die Nummer auf der Seite angezeigt
+    whatsapp: "447460637925",          // internationale Nummer ohne + und Leerzeichen
+    whatsappDisplay: "+44 7460 637925", // so wird die Nummer auf der Seite angezeigt
+    // Vorausgefüllte Nachricht, wenn Kunden auf einen WhatsApp-Button klicken
+    whatsappMessage: "Hallo iptvweltpremium.de, ich interessiere mich für Ihren Service.",
     email: "kontakt@iptvweltpremium.de",
     // Ersatzweg für Bestellungen, falls /api/order ausfällt (der öffentliche Schlüssel darf im Browser stehen)
     emailjs: { service: "service_8qunnth", template: "template_kir731r", publicKey: "R6r0yfArKg9oG_O0g" }
@@ -148,7 +150,7 @@
 
   // Alle WhatsApp-/E-Mail-Links mit der Konfiguration füllen
   document.querySelectorAll("[data-wa]").forEach(function (a) {
-    a.href = waLink(a.dataset.wa || "Hallo IPTV Welt Premium, ich habe eine Frage.");
+    a.href = waLink(a.dataset.wa || CONFIG.whatsappMessage);
     a.target = "_blank";
     a.rel = "noopener";
   });
